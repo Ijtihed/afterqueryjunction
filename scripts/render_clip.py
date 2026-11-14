@@ -32,7 +32,7 @@ def font(size, bold=False):
     return ImageFont.load_default()
 
 
-F_T, F_B, F_S, F_N = font(26, True), font(19), font(15), font(40, True)
+F_T, F_B, F_S, F_N, F_G = font(24, True), font(19), font(15), font(40, True), font(13, True)
 
 
 def draw_grid(d, rows, legend, x0, y0, s, zones, sel=None):
@@ -45,6 +45,7 @@ def draw_grid(d, rows, legend, x0, y0, s, zones, sel=None):
                 d.rectangle(box, fill="#2c2c2e")
             elif c.isdigit():
                 d.rectangle(box, fill=BLUE if sel == int(c) else "#0b3a6e", outline="#64b4ff")
+                d.text((box[0] + s // 2, box[1] + s // 2), c, font=F_G, fill="#ffffff", anchor="mm")
             else:
                 d.rounded_rectangle(box, radius=max(1, s // 5), fill=legend.get(c, {}).get("color", "#999999"))
     for z in zones:
@@ -59,6 +60,7 @@ def panel(img, run, ci, pos, frame, sel, x0, title):
     pw = W // 2 - 30
     d.rounded_rectangle([x0, 70, x0 + pw, H - 20], radius=22, fill=PANEL)
     d.text((x0 + 22, 84), title, font=F_T, fill=TEXT)
+    d.text((x0 + pw - 22, 88), f"reward {run['score']['reward']:.2f}", font=F_B, fill=DIM, anchor="ra")
     rows = frame if frame is not None else (ch["initial"] if pos == 0 else ch["steps"][pos - 1]["frames"][-1])
     zones = ch["steps"][pos - 1]["objectives"] if pos > 0 else [dict(o, current_cells=0, met=False) for o in ch["objectives"]]
     s = min((pw - 44) // len(rows[0]), 400 // len(rows))
@@ -102,7 +104,7 @@ def main():
         img = Image.new("RGB", (W, H), BG)
         ImageDraw.Draw(img).text((30, 22), f"Crucible   chamber {a.chamber} ({name}), facility {a.seed}", font=F_T, fill=TEXT)
         for k, run in enumerate(runs):
-            panel(img, run, ci, pos[k], fr[k], sel[k], 20 + k * (W // 2 - 10), f"{run['label']}   reward {run['score']['reward']:.2f}")
+            panel(img, run, ci, pos[k], fr[k], sel[k], 20 + k * (W // 2 - 10), run["label"])
         frames.extend([img] * hold)
 
     pos = [0, 0]

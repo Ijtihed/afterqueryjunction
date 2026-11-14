@@ -36,11 +36,12 @@ def rules_card(seed: int) -> str:
     for r, (ph, gr, de) in ROLES.items():
         out.append(f"- `{sym[r]}`: {phase[ph]}" + ("" if ph == 0 else f"; gravity pulls it {'down' if gr > 0 else 'up'}; density {de}")
                    + ("" if r in "wsgeako" else " (does not exist at the start; made by a reaction)"))
-    out += ["", "A moving cell passes through a liquid cell when that liquid has the opposite gravity, or the same gravity and lower density. Powders never pass through powders.", "",
+    out += ["", "A moving cell passes through a liquid cell when that liquid has the opposite gravity, or the same gravity and lower density. Powders never pass through powders.",
+            "Each tick everything moves first, then reactions happen. A liquid with more of its own kind stacked on it is pushed sideways into an adjacent gap.", "",
             "Reactions happen when cells touch side to side or top to bottom:", ""]
     for a, b, a2, b2, na, nb in REACTIONS:
         nm = lambda v: "nothing" if v is None else f"`{sym[v]}`"
-        bb = "a wall cell" if b == "#" else f"`{sym[b]}`"
+        bb = "the wall cell it rests on (the one its gravity presses it against)" if b == "#" else f"`{sym[b]}`"
         need = f" Only happens when the `{sym[b]}` cell has at least {nb} neighbours of its own kind." if nb else ""
         out.append(f"- `{sym[a]}` touching {bb}: `{sym[a]}` becomes {nm(a2)}, {bb} becomes {nm(b2)}.{need}")
     return "\n".join(out) + "\n"

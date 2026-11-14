@@ -66,6 +66,7 @@ This section is the complete and correct description of the substances.
 - `H`: liquid: moves along its gravity, creeps sideways toward the nearest place it can keep going, and levels out; gravity pulls it down; density 12
 
 A moving cell passes through a liquid cell when that liquid has the opposite gravity, or the same gravity and lower density. Powders never pass through powders.
+Each tick everything moves first, then reactions happen. A liquid with more of its own kind stacked on it is pushed sideways into an adjacent gap.
 
 Reactions happen when cells touch side to side or top to bottom:
 
@@ -75,5 +76,5 @@ Reactions happen when cells touch side to side or top to bottom:
 - `F` touching `D`: `F` becomes `K`, `D` becomes nothing.
 - `K` touching `D`: `K` becomes `K`, `D` becomes `K`.
 - `K` touching `J`: `K` becomes `C`, `J` becomes `C`.
-- `C` touching a wall cell: `C` becomes nothing, a wall cell becomes nothing.
+- `C` touching the wall cell it rests on (the one its gravity presses it against): `C` becomes nothing, the wall cell it rests on (the one its gravity presses it against) becomes nothing.
 - `H` touching `K`: `H` becomes `H`, `K` becomes `H`.

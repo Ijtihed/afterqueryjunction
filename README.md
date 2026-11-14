@@ -101,9 +101,13 @@ What happened, in order:
 3. In chamber 3, **pilot 5** kept the chamber solvable for five openings, then opened the one gate that removed the last winning order (the other remaining gate would have kept it alive). It had seen the risk but had no lab runs left to test the alternative.
 4. **Pilot 6** stopped with 2 of 3 zones met and **one winning order still available**: a single further opening completed the chamber. A lab rehearsal had convinced it that opening would drain a finished zone. Its model of the world predicted most things correctly and was wrong on the one prediction that decided the outcome.
 
+**Rules-given ablation (one run).** Pilot 8 played seed 2 with the true substance behaviour written into its instruction (`results/pilots/v3-rules-pilot8-seed2.jsonl`, replay `results/replay-rules-pilot8-seed2.html`). Reward 0.80, against 0.775 for the blind pilot on the same layout. It completed works, and lost foundry at its **first** opening: it released the smaller reservoir first, and every one of the 12 winning orders needs the larger pour to come first. It found out three openings later, and finished with 4 of 9 lab runs unused. So with the rules in hand the loss is an irreversible ordering mistake with a delayed consequence, not a failure to discover rules. One run, different seed from the blind pilot, so this is suggestive only.
+
+Note on versions: pilots 5 to 7 ran before two simulator details were made predictable (commit `16643df`); pilot 8 ran after. Journals from before that commit replay at `b7750c9` or the `pilots-3-chamber` tag.
+
 Two earlier pilots (3 and 4) are kept in `results/pilots/` but are **not evidence**: at that point the bulk reaction could not be observed with any ordinary lab layout, which is missing information rather than a reasoning failure. The threshold was lowered and `tests/` now asserts that every rule a chamber depends on can be shown in the lab box.
 
-Caveats: n = 2 on version 2, one model, a pilot harness rather than OpenCode, and seeds differ only in skin, mirroring, chamber order and gate numbers. Treat it as a pilot signal, not a measured gap. The rules-given ablation has not been run.
+Caveats: n = 2 on version 2, one model, a pilot harness rather than OpenCode, and seeds differ only in skin, mirroring, chamber order and gate numbers. Treat it as a pilot signal, not a measured gap. 
 
 Replays with exact per-move solvability: open `results/replay-pilot5-seed31.html` and `results/replay-pilot6-seed32.html` in a browser.
 

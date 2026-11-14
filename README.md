@@ -109,6 +109,10 @@ Note on versions: pilots 5 to 7 ran before two simulator details were made predi
 
 **After the cleanup, with 9 lab runs: no gap.** Pilot 9 (seed 43, `results/pilots/v4-pilot9-seed43.jsonl`) completed all six chambers, reward 1.00, using 7 of 9 lab runs, most of them as miniature rehearsals of risky chamber steps. With lab runs to spare, the strongest model tested solves the task. The lab budget is therefore a task parameter (`scripts/build_tasks.py --lab-runs N`, tasks named `-labN`); the reference needs 6 and scores 1.0 through Harbor at 6.
 
+**With 6 lab runs: still no gap.** Pilot 10 (seed 44, budget 6, `results/pilots/v4-pilot10-seed44-lab6.jsonl`) also completed all six chambers, reward 1.00, using all 6 runs. By its own account two of its openings were gambles rather than tested knowledge, and its single-cell test of the bulk-only reaction was a false negative that it worked around by inference.
+
+**Bottom line on the current version.** Against Claude Fable 5.2 in the pilot harness, blind play scored 1.00 twice (budgets 9 and 6) and the rules-given run scored 0.80. That is 1 loss in 3 runs and not a demonstrated gap. Earlier losses (pilots 5 to 7) depended on simulator details that have since been removed because they were arbitrary. No other model and no OpenCode run has been measured.
+
 Two earlier pilots (3 and 4) are kept in `results/pilots/` but are **not evidence**: at that point the bulk reaction could not be observed with any ordinary lab layout, which is missing information rather than a reasoning failure. The threshold was lowered and `tests/` now asserts that every rule a chamber depends on can be shown in the lab box.
 
 Caveats: n = 2 on version 2, one model, a pilot harness rather than OpenCode, and seeds differ only in skin, mirroring, chamber order and gate numbers. Treat it as a pilot signal, not a measured gap. 

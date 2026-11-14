@@ -74,6 +74,6 @@ Simulation core, oracle, three verified chambers, server and CLI, reference play
 
 ## J. Risks and kill criteria
 
-- **A top model solves it.** Triggered once already: two blind pilots scored 1.0 on version 1, which led to the harder version 2. Version 2 pilots scored 0.55 and 0.60 (n = 2, not Harbor). If strong models solve version 2 through Harbor, report that plainly and scale the chamber generator rather than tighten budgets arbitrarily.
+- **A top model solves it.** Triggered once already: two blind pilots scored 1.0 on version 1, which led to the harder version 2. Version 2 pilots scored 0.55 and 0.60, but on simulator details later removed as arbitrary; on the cleaned version blind pilots scored 1.00 twice (lab budgets 9 and 6), so this criterion is triggered again. If strong models solve version 2 through Harbor, report that plainly and scale the chamber generator rather than tighten budgets arbitrarily.
 - **Humans cannot do chamber 3.** Then the demo puzzle is chamber 2 and chamber 3 is presented as the agent-facing tier.
 - **Reference advantage.** The reference knows the matter family. This is disclosed; the fair comparison is first-time humans plus the rules-given ablation.

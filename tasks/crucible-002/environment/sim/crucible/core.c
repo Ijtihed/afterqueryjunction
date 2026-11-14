@@ -91,8 +91,8 @@ static int try_cell(Sim *s, int x, int y) {
     }
     if (best) { swap_cells(s, i, y * w + x + bestdx, bestdx > 0 ? 1 : 0); return 1; }
 
-    /* Pressure: a liquid run with liquid stacked on any part of it pushes its
-     * end cell into an adjacent gap, so a body levels out along a floor. */
+    /* Pressure: a run of liquid with more of the same stacked on any part of
+     * it pushes its end cell into an adjacent gap, so a body levels out. */
     int py = y - g;
     if (py < 0 || py >= h) return 0;
     for (int k = 0; k < 2; k++) {
@@ -101,8 +101,9 @@ static int try_cell(Sim *s, int x, int y) {
         for (int bx = x; bx >= 0 && bx < w; bx -= dx) {
             int t = s->cell[y * w + bx];
             if (!is_liquid(s, t) || s->grav[t] != g) break;
-            int up = s->cell[py * w + bx];
-            if (is_liquid(s, up) && s->grav[up] == g) {
+            /* Only its own kind stacked above pushes a liquid sideways, so a
+             * different liquid poured on top does not shove it around. */
+            if (s->cell[py * w + bx] == t) {
                 swap_cells(s, i, y * w + nx, dx > 0 ? 1 : 0);
                 return 1;
             }
@@ -133,6 +134,9 @@ static int react(Sim *s) {
             if (xx < 0 || xx >= w || yy < 0 || yy >= h) continue;
             int j = yy * w + xx, b = s->cell[j];
             if ((b < MAT0 && b != WALL) || s->moved[j]) continue;
+            /* A wall is only attacked by what rests on it: the cell must be
+             * pressed against the wall by its own gravity. */
+            if (b == WALL && (DX[k] != 0 || DY[k] != s->grav[a])) continue;
             const uint8_t *r = &s->rx[(a * NID + b) * 2];
             if (r[0] == NO_RX) continue;
             if (same_neighbours(s, x, y, a) < s->rxneed[a * NID + b]) continue;

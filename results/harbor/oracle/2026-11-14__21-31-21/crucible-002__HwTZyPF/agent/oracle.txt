@@ -1,0 +1,13 @@
+identified roles: {'D': 's', 'F': 'a', 'G': 'k', 'K': 'w', 'C': 'e', 'E': 'q', 'B': 'o', 'J': 'g', 'A': 'x'}
+chamber 1: plan [2, 3]
+chamber 1: complete
+chamber 2: plan [1, 2]
+chamber 2: complete
+chamber 3: plan [1, 3]
+chamber 3: complete
+chamber 4: plan [2, 4, 3]
+chamber 4: complete
+chamber 5: plan [5, 6, 1, 3]
+chamber 5: complete
+chamber 6: plan [3, 4, 2, 5, 6, 1]
+chamber 6: complete

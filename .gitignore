@@ -1,0 +1,5 @@
+__pycache__/
+*.so
+tasks/jobs/
+playtests/
+*.pyc

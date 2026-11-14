@@ -1,0 +1,15 @@
+{"t":"lab","rows":["....#...","GE..#EJ.","GE..#EJ.","GE..#EJ.","....#...","....#..."]}
+{"t":"lab","rows":["....#...",".JG.#BF.",".JG.#BF.",".JG.#BF.","....#...","....#..."]}
+{"t":"lab","rows":["G#G#E#EE","G#G#E#EE","G#G#E#EE","B#F#B#FF","B#F#B#FF","B#F#B#FF"]}
+{"t":"lab","rows":["J#G#A#A.","J#G#A#..",".#.#.#GG","D#D#D#GG",".#.#.#..",".#.#A#A."]}
+{"t":"lab","rows":["A#J#J#A#","A#J#J#G#","A#J#J#G#","B#B#A#B#","B#B#A#B#","B#B#A#B#"]}
+{"t":"lab","rows":["J#E#G#G#","G#G#G#G#","G#G#B#B#","B#B#B#B#","B#B#B#B#","B#B#F#D#"]}
+{"t":"open","chamber":2,"gate":3}
+{"t":"open","chamber":2,"gate":2}
+{"t":"open","chamber":3,"gate":7}
+{"t":"open","chamber":3,"gate":2}
+{"t":"open","chamber":3,"gate":4}
+{"t":"open","chamber":1,"gate":1}
+{"t":"open","chamber":1,"gate":3}
+{"t":"lab","rows":["#GGGGG##","#GGJJJ##","#.######","#BBBB###","#BBBB###","########"]}
+{"t":"open","chamber":3,"gate":6}

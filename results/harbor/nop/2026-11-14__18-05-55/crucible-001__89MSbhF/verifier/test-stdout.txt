@@ -1,0 +1,38 @@
+{
+ "seed": 1,
+ "reward": 0.0,
+ "chambers": [
+  {
+   "chamber": "leak",
+   "tier": 1,
+   "objectives_met": 0,
+   "objectives": 1,
+   "complete": false,
+   "score": 0.0,
+   "weight": 0.2,
+   "gates_opened": []
+  },
+  {
+   "chamber": "cellar",
+   "tier": 2,
+   "objectives_met": 0,
+   "objectives": 1,
+   "complete": false,
+   "score": 0.0,
+   "weight": 0.3,
+   "gates_opened": []
+  },
+  {
+   "chamber": "works",
+   "tier": 3,
+   "objectives_met": 0,
+   "objectives": 3,
+   "complete": false,
+   "score": 0.0,
+   "weight": 0.5,
+   "gates_opened": []
+  }
+ ],
+ "lab_runs_used": 0,
+ "actions": 0
+}

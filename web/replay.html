@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crucible replay</title>
+<style>/*__STYLE__*/</style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>CRU<span>C</span>IBLE</h1>
+  <span class="pill">replay of recorded runs, facility <b id="seed"></b></span>
+  <span class="sp"></span>
+  <div class="tabs" id="chtabs" style="margin:0"></div>
+  <button class="primary" id="play">Play</button>
+  <button id="step">Step</button>
+  <button id="reset">Reset</button>
+</header>
+<main style="grid-template-columns:1fr">
+  <div class="duo">
+    <div class="lane"><h2><select id="selA"></select><span>reward <b id="rewA"></b></span></h2>
+      <div class="stagewrap"><canvas id="cvA"></canvas></div>
+      <div class="row" style="margin-top:8px"><span class="hint">winning gate orders still possible</span><span class="big num" id="winA"></span></div>
+      <div class="steps" id="stepsA"></div><div class="banner" id="msgA"></div></div>
+    <div class="lane"><h2><select id="selB"></select><span>reward <b id="rewB"></b></span></h2>
+      <div class="stagewrap"><canvas id="cvB"></canvas></div>
+      <div class="row" style="margin-top:8px"><span class="hint">winning gate orders still possible</span><span class="big num" id="winB"></span></div>
+      <div class="steps" id="stepsB"></div><div class="banner" id="msgB"></div></div>
+  </div>
+  <div class="card"><h3>Results in this bundle</h3><div id="table"></div>
+    <p class="hint">Counts of winning gate orders are exact: every order of the remaining gates is simulated. A red step is the first opening after which no order of the remaining gates completes the chamber.</p></div>
+  <div class="card"><h3>Lab experiments of the left run</h3><div class="hist" id="labs"></div><div class="stagewrap" style="margin-top:8px"><canvas id="cvL"></canvas></div><div class="hint" id="labmsg"></div></div>
+</main>
+<script src="render.js"></script>
+<script>
+const BUNDLE = /*__BUNDLE__*/null;
+const $ = (id) => document.getElementById(id);
+let B = null, ch = 0, pos = {A: 0, B: 0}, playing = false;
+const st = {A: new CrucibleStage($('cvA'), {maxCell: 24}), B: new CrucibleStage($('cvB'), {maxCell: 24})}, stL = new CrucibleStage($('cvL'), {maxCell: 22});
+const run = (k) => B.runs[+$('sel' + k).value], cham = (k) => run(k).chambers[ch];
+
+function zones(k, i) { const c = cham(k); return i === 0 ? c.objectives.map((o) => Object.assign({}, o, {current_cells: 0, met: false})) : c.steps[i - 1].objectives; }
+function paint(k) {
+  const c = cham(k), i = pos[k], s = st[k]; s.setLegend(run(k).legend); s.zones = zones(k, i); s.flash = 0;
+  s.draw(i === 0 ? c.initial : c.steps[i - 1].frames[c.steps[i - 1].frames.length - 1]);
+  const wins = i === 0 ? c.winning_orders_at_start : c.steps[i - 1].wins_after;
+  $('win' + k).textContent = wins; $('win' + k).className = 'big num' + (wins === 0 ? ' zero' : '');
+  $('steps' + k).innerHTML = c.steps.map((x, n) => `<span class="chip ${n + 1 === i ? 'now' : n + 1 < i ? 'past' : ''} ${x.fatal && n + 1 <= i ? 'fatal' : ''}">${n + 1}: gate ${x.gate}</span>`).join('') || '<span class="hint">this run never opened a gate here</span>';
+  const m = $('msg' + k);
+  if (i === 0) { m.className = 'banner'; m.textContent = `${c.winning_orders_at_start} winning gate orders exist at the start.`; return; }
+  const x = c.steps[i - 1];
+  if (x.fatal) { m.className = 'banner fatal'; m.innerHTML = `<b>Gate ${x.gate} eliminated all ${x.wins_before} remaining winning orders.</b> Gates that would have kept the chamber solvable: ${x.safe_alternatives.join(', ')}.`; }
+  else if (x.complete) { m.className = 'banner good'; m.textContent = 'Chamber complete.'; }
+  else if (x.wins_after === 0) { m.className = 'banner fatal'; m.textContent = `Gate ${x.gate}: the chamber was already unsolvable.`; }
+  else { m.className = 'banner'; m.textContent = `Gate ${x.gate}: winning orders ${x.wins_before} → ${x.wins_after}.`; }
+}
+async function advance(k) {
+  const c = cham(k); if (pos[k] >= c.steps.length) return false;
+  const x = c.steps[pos[k]], s = st[k]; s.zones = zones(k, pos[k]); s.selGate = x.gate; s.draw();
+  await new Promise((r) => setTimeout(r, 650)); s.selGate = null;
+  await s.play(x.frames, 50); pos[k]++;
+  if (x.fatal) { for (let f = 1; f >= 0; f -= 0.05) { s.flash = f; s.draw(); await new Promise((r) => setTimeout(r, 22)); } }
+  paint(k); return true;
+}
+async function stepBoth() { const r = await Promise.all([advance('A'), advance('B')]); return r[0] || r[1]; }
+async function playAll() { if (playing) return; playing = true; while (playing && await stepBoth()) await new Promise((r) => setTimeout(r, 900)); playing = false; }
+function reset() { playing = false; pos = {A: 0, B: 0}; st.A.stop(); st.B.stop(); paint('A'); paint('B'); }
+function tabs() { $('chtabs').innerHTML = ''; B.runs[0].chambers.forEach((c, n) => { const b = document.createElement('div'); b.className = 'tab' + (n === ch ? ' on' : ''); b.textContent = 'Chamber ' + (n + 1); b.onclick = () => { ch = n; tabs(); reset(); }; $('chtabs').append(b); }); }
+function labs() {
+  const r = run('A'); $('labs').innerHTML = r.lab.length ? '' : '<span class="hint">no lab runs recorded</span>'; stL.setLegend(r.legend);
+  r.lab.forEach((l) => { const b = document.createElement('button'); b.textContent = '#' + l.run; b.onclick = async () => { $('labmsg').textContent = l.reactions.map((x) => `${x.between.join(' + ')}: ${x.result}`).join('; ') || 'no reaction in this run'; await stL.play(l.frames, 30); }; $('labs').append(b); });
+  if (r.lab.length) stL.draw(r.lab[0].frames[0]);
+}
+function init(b) {
+  B = b; $('seed').textContent = b.seed;
+  for (const k of ['A', 'B']) { $('sel' + k).innerHTML = b.runs.map((r, n) => `<option value="${n}">${r.label}</option>`).join(''); $('sel' + k).onchange = () => { $('rew' + k).textContent = run(k).score.reward.toFixed(2); reset(); if (k === 'A') labs(); }; }
+  $('selB').value = b.runs.length - 1; for (const k of ['A', 'B']) $('rew' + k).textContent = run(k).score.reward.toFixed(2);
+  $('table').innerHTML = '<table><tr><th>Run</th><th>Reward</th><th>Lab runs</th>' + b.runs[0].chambers.map((c, n) => `<th>Chamber ${n + 1}</th>`).join('') + '</tr>' +
+    b.runs.map((r) => `<tr><td>${r.label}</td><td class="num">${r.score.reward.toFixed(2)}</td><td class="num">${r.score.lab_runs_used}</td>` + r.chambers.map((c, n) => { const sc = r.score.chambers[n];
+      return `<td>${sc.complete ? 'complete' : sc.objectives_met + '/' + sc.objectives + ' zones'}${c.first_fatal_step ? `, fatal at step ${c.first_fatal_step} (gate ${c.steps[c.first_fatal_step - 1].gate})` : ''}</td>`; }).join('') + '</tr>').join('') + '</table>';
+  tabs(); reset(); labs(); st.A.idle(); st.B.idle();
+}
+$('play').onclick = playAll; $('step').onclick = () => { if (!playing) stepBoth(); }; $('reset').onclick = reset;
+window.addEventListener('resize', () => { paint('A'); paint('B'); });
+if (BUNDLE) init(BUNDLE);
+else { const f = new URLSearchParams(location.search).get('file'); if (f) fetch(f).then((r) => r.json()).then(init); else document.body.insertAdjacentHTML('beforeend', '<p style="padding:20px">Open with ?file=bundle.json, or generate a standalone page with scripts/analyze.py --html.</p>'); }
+</script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crucible</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>CRU<span>C</span>IBLE</h1>
+  <span class="pill">lab runs left <b id="runs">-</b></span>
+  <span class="pill">chambers complete <b id="done">0/3</b></span>
+  <span class="sp"></span>
+  <button id="help">How to play</button>
+  <button id="finish" class="danger">Finish session</button>
+</header>
+<main>
+  <section>
+    <div class="tabs" id="tabs"></div>
+    <div class="stagewrap"><canvas id="cv"></canvas></div>
+    <div class="banner" id="msg"></div>
+  </section>
+  <aside class="side">
+    <div class="card" id="labcard">
+      <h3>Lab: paint, then run</h3>
+      <div class="palette" id="palette"></div>
+      <div class="row" style="margin-top:10px">
+        <button class="primary" id="run">Run experiment</button>
+        <button id="clear">Clear</button>
+        <button id="edit" hidden>Edit layout again</button>
+      </div>
+      <p class="hint">Each run uses one of your lab runs. The lab follows the same rules as the chambers.</p>
+      <h3 style="margin-top:12px">Earlier runs</h3>
+      <div class="hist" id="hist"></div>
+    </div>
+    <div class="card" id="chcard" hidden>
+      <h3>Objectives</h3>
+      <div id="objs"></div>
+      <h3 style="margin-top:12px">Gates</h3>
+      <div class="gates" id="gates"></div>
+      <div class="row" style="margin-top:10px">
+        <button class="primary" id="open" disabled>Open gate</button>
+        <span class="hint">Permanent. No undo.</span>
+      </div>
+      <h3 style="margin-top:12px">Replays</h3>
+      <div class="hist" id="chhist"></div>
+    </div>
+    <div class="card"><h3>Substances</h3><div id="legend"></div></div>
+    <div class="card"><h3>Log</h3><div class="log" id="log"></div></div>
+  </aside>
+</main>
+
+<div class="overlay" id="start">
+  <div class="modal">
+    <h2>CRUCIBLE</h2>
+    <ul>
+      <li>Three chambers hold substances behind numbered gates. Fill every outlined zone with the substance it asks for.</li>
+      <li>Your only move in a chamber is opening a gate. It is permanent, and you get one attempt per chamber.</li>
+      <li>Nobody tells you how the substances behave. Find out in the <b>Lab</b>: paint a layout, press run, watch.</li>
+      <li>You have a limited number of lab runs. A zone may ask for a substance that does not exist yet.</li>
+      <li>Amounts can matter, and new substances can react again.</li>
+    </ul>
+    <div id="startform">
+      <label class="hint">Name or initials</label><input id="player" maxlength="24" autocomplete="off">
+      <label class="hint">Facility number</label><input id="seed" type="number" value="1">
+      <button class="primary" id="begin">Begin</button>
+    </div>
+    <button id="closehelp" hidden>Back to the facility</button>
+  </div>
+</div>
+<div class="overlay" id="end" hidden>
+  <div class="modal">
+    <h2>SESSION COMPLETE</h2>
+    <p>Score <span class="big" id="score"></span></p>
+    <div id="endrows"></div>
+    <label class="hint">In one or two sentences: what did you figure out?</label>
+    <textarea id="expl" rows="3"></textarea>
+    <button class="primary" id="save">Save and start a new player</button>
+  </div>
+</div>
+
+<script src="render.js"></script>
+<script>
+const $ = (id) => document.getElementById(id);
+const LAB_W = 8, LAB_H = 6;
+let sid = null, brief = null, tab = 'lab', tool = '.', busy = false, selGate = null, t0 = 0;
+let lab = Array.from({length: LAB_H}, () => Array(LAB_W).fill('.')), labShown = null, views = {};
+const stage = new CrucibleStage($('cv'), {maxCell: 34}); stage.idle();
+
+async function api(cmd, body = {}) {
+  const r = await fetch('/api/' + cmd, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(Object.assign({session: sid}, body))});
+  const j = await r.json(); if (!r.ok) throw new Error(j.error || 'error'); return j;
+}
+const note = (kind, text = '') => api('note', {kind, text}).catch(() => {});
+const say = (html, cls = '') => { $('msg').className = 'banner ' + cls; $('msg').innerHTML = html; };
+const log = (html) => { const d = document.createElement('div'); d.innerHTML = `<span class="mono">${((performance.now() - t0) / 1000).toFixed(0).padStart(4)}s</span> ${html}`; $('log').prepend(d); };
+const sw = (s) => `<span class="sw" style="background:${s.color};color:${s.color}"></span>`;
+const labRows = () => ['#'.repeat(LAB_W + 2), ...lab.map((r) => '#' + r.join('') + '#'), '#'.repeat(LAB_W + 2)];
+
+function legend() {
+  const all = Object.values(stage.legend).sort((a, b) => a.symbol.localeCompare(b.symbol));
+  $('legend').innerHTML = all.map((s) => `<div>${sw(s)}<b>${s.name}</b></div>`).join('') || '<span class="hint">none yet</span>';
+}
+function tabs() {
+  const items = [['lab', 'Lab']].concat(brief.chambers.map((c) => [c.chamber, 'Chamber ' + c.chamber]));
+  $('tabs').innerHTML = '';
+  for (const [k, name] of items) {
+    const b = document.createElement('div'); const v = views[k];
+    b.className = 'tab' + (tab === k ? ' on' : '') + (v && v.status === 'complete' ? ' done' : '') + (v && v.status === 'closed' ? ' dead' : '');
+    b.textContent = name + (v && v.status === 'complete' ? ' ✓' : ''); b.onclick = () => { if (!busy) show(k); }; $('tabs').append(b);
+  }
+  $('done').textContent = Object.values(views).filter((v) => v.status === 'complete').length + '/' + brief.chambers.length;
+}
+function palette() {
+  const items = [{symbol: '.', name: 'erase', color: '#3a4352'}, {symbol: '#', name: 'wall', color: '#566277'}].concat(brief.substances);
+  $('palette').innerHTML = '';
+  for (const s of items) { const b = document.createElement('button'); b.className = tool === s.symbol ? 'on' : ''; b.innerHTML = sw(s) + s.name; b.onclick = () => { tool = s.symbol; palette(); }; $('palette').append(b); }
+}
+async function show(k) {
+  tab = k; selGate = null; stage.selGate = null; stage.stop(); note('tab', String(k));
+  $('labcard').hidden = k !== 'lab'; $('chcard').hidden = k === 'lab';
+  if (k === 'lab') { stage.zones = []; labShown = null; $('edit').hidden = true; stage.draw(labRows()); say('Paint substances into the box, then run the experiment.'); }
+  else { views[k] = await api('view', {chamber: k}); chamber(k); }
+  tabs();
+}
+function chamber(k) {
+  const v = views[k]; stage.zones = v.objectives; for (const s of v.substances_present) stage.legend[s.symbol] = s; legend();
+  stage.draw(v.grid);
+  $('objs').innerHTML = v.objectives.map((o) => { const s = stage.legend[o.substance] || {color: '#888', name: 'a substance not seen yet'};
+    return `<div class="obj">${sw(s)}<span>Zone <b>${o.zone}</b>: at least <b>${o.min_cells}</b> of <b>${s.name}</b> <span class="num ${o.met ? 'ok' : ''}">(${o.current_cells}${o.met ? ' ✓' : ''})</span></span></div>`; }).join('');
+  $('gates').innerHTML = '';
+  for (const g of v.gates_closed) { const b = document.createElement('button'); b.textContent = g; b.className = selGate === g ? 'on' : ''; b.disabled = v.status !== 'active'; b.onclick = () => pick(g); $('gates').append(b); }
+  $('open').disabled = selGate === null || v.status !== 'active'; $('open').textContent = selGate === null ? 'Open gate' : 'Open gate ' + selGate;
+  $('chhist').innerHTML = ''; v.gates_opened_in_order.forEach((g, i) => { const b = document.createElement('button'); b.textContent = `${i + 1}: gate ${g}`; b.onclick = () => replayStep(k, i + 1); $('chhist').append(b); });
+  if (v.status === 'complete') say('Chamber complete.', 'good');
+  else if (v.status === 'closed') say('No gates left. This chamber cannot be completed any more.', 'fatal');
+  else say('Select a gate, then open it. Opened so far: ' + (v.gates_opened_in_order.join(', ') || 'none') + '.');
+}
+function pick(g) { selGate = selGate === g ? null : g; stage.selGate = selGate; chamber(tab); }
+async function replayStep(k, step) { if (busy) return; busy = true; note('replay', `${k}/${step}`); const f = await api('frames', {kind: 'chamber', chamber: k, step, legend: true}); stage.setLegend(f.legend); await stage.play(f.frames, 45); stage.draw(views[k].grid); busy = false; }
+
+stage.onCell = (x, y, down) => {
+  if (busy) return;
+  if (tab === 'lab') { if (labShown) return; if (x < 1 || y < 1 || x > LAB_W || y > LAB_H) return; lab[y - 1][x - 1] = tool; stage.draw(labRows()); }
+  else if (down) { const c = stage.rows[y][x]; if (c >= '0' && c <= '9' && views[tab].status === 'active') pick(+c); }
+};
+$('clear').onclick = () => { lab = lab.map((r) => r.map(() => '.')); labShown = null; $('edit').hidden = true; stage.draw(labRows()); };
+$('edit').onclick = () => { labShown = null; $('edit').hidden = true; stage.draw(labRows()); say('Paint substances into the box, then run the experiment.'); };
+$('run').onclick = async () => {
+  if (busy) return; busy = true;
+  try {
+    const r = await api('lab', {rows: lab.map((x) => x.join(''))});
+    $('runs').textContent = r.runs_left; const f = await api('frames', {kind: 'lab', run: r.run, legend: true});
+    stage.setLegend(Object.fromEntries(Object.entries(f.legend).filter(([s]) => f.frames.some((fr) => fr.some((row) => row.includes(s)))))); legend();
+    labShown = r.run; $('edit').hidden = false; await stage.play(f.frames, 30);
+    const rx = r.reactions.map((x) => `${x.between.join(' + ')}: ${x.result}`).join('; ');
+    say(`Run ${r.run} came to rest after ${r.ticks} ticks.`); log(`<b>lab ${r.run}</b> ${rx ? 'reaction seen' : 'no reaction'}`);
+    const b = document.createElement('button'); b.textContent = '#' + r.run; b.onclick = async () => { if (busy) return; busy = true; note('labreplay', String(r.run)); labShown = r.run; $('edit').hidden = false; await stage.play(f.frames, 30); busy = false; }; $('hist').append(b);
+  } catch (e) { say(e.message, 'fatal'); }
+  busy = false;
+};
+$('open').onclick = async () => {
+  if (busy || selGate === null) return; busy = true; const k = tab, g = selGate;
+  try {
+    const v = await api('open', {chamber: k, gate: g}); const f = await api('frames', {kind: 'chamber', chamber: k, step: v.gates_opened_in_order.length, legend: true});
+    stage.setLegend(Object.fromEntries(Object.entries(f.legend).filter(([s]) => v.grid.some((row) => row.includes(s)) || f.frames.some((fr) => fr.some((row) => row.includes(s))))));
+    selGate = null; stage.selGate = null; await stage.play(f.frames, 45);
+    views[k] = v; log(`<b>chamber ${k}</b> opened gate ${g}: ${v.objectives.filter((o) => o.met).length}/${v.objectives.length} zones`); chamber(k); tabs();
+  } catch (e) { say(e.message, 'fatal'); }
+  busy = false;
+};
+$('help').onclick = () => { $('start').hidden = false; $('startform').hidden = true; $('closehelp').hidden = false; note('help'); };
+$('closehelp').onclick = () => { $('start').hidden = true; };
+$('begin').onclick = async () => {
+  const r = await fetch('/api/new_session', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({seed: +$('seed').value, player: $('player').value})});
+  const j = await r.json(); if (!r.ok) return alert(j.error); sid = j.session; t0 = performance.now();
+  brief = await api('brief'); for (const s of brief.substances) stage.legend[s.symbol] = s; $('runs').textContent = brief.lab.runs_left;
+  for (const c of brief.chambers) views[c.chamber] = c;
+  $('start').hidden = true; palette(); legend(); show('lab');
+};
+$('finish').onclick = async () => {
+  if (!sid || !confirm('Finish this session? Chambers you have not completed stay as they are.')) return;
+  const s = await api('score'); $('score').textContent = s.reward.toFixed(2);
+  $('endrows').innerHTML = '<table><tr><th>Chamber</th><th>Zones</th><th>Gates opened</th></tr>' + s.chambers.map((c, i) => `<tr><td>${i + 1}</td><td>${c.objectives_met}/${c.objectives}${c.complete ? ' ✓' : ''}</td><td class="mono">${c.gates_opened.join(' ') || '-'}</td></tr>`).join('') + '</table>';
+  $('end').hidden = false;
+};
+$('save').onclick = async () => { await note('explanation', $('expl').value); await note('finished'); location.reload(); };
+window.addEventListener('resize', () => stage.draw());
+window.addEventListener('error', (e) => say('Page error: ' + e.message, 'fatal'));
+window.addEventListener('unhandledrejection', (e) => say('Page error: ' + (e.reason && e.reason.message), 'fatal'));
+// #c3 style hash skips the form and jumps to a chamber, for kiosk setups and smoke tests.
+if (location.hash.startsWith('#c')) { $('player').value = 'kiosk'; $('begin').onclick().then(() => show(+location.hash.slice(2))); }
+</script>
+</body>
+</html>

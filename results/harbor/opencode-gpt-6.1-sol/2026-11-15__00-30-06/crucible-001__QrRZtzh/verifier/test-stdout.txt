@@ -1,0 +1,97 @@
+{
+ "seed": 1,
+ "lab_budget": 9,
+ "reward": 0.575,
+ "chambers": [
+  {
+   "chamber": "leak",
+   "tier": 1,
+   "objectives_met": 1,
+   "objectives": 1,
+   "complete": true,
+   "score": 1.0,
+   "weight": 0.1,
+   "gates_opened": [
+    3,
+    1
+   ]
+  },
+  {
+   "chamber": "float",
+   "tier": 1,
+   "objectives_met": 1,
+   "objectives": 1,
+   "complete": true,
+   "score": 1.0,
+   "weight": 0.1,
+   "gates_opened": [
+    3,
+    2,
+    4
+   ]
+  },
+  {
+   "chamber": "cellar",
+   "tier": 2,
+   "objectives_met": 1,
+   "objectives": 1,
+   "complete": true,
+   "score": 1.0,
+   "weight": 0.15,
+   "gates_opened": [
+    3,
+    4
+   ]
+  },
+  {
+   "chamber": "tower",
+   "tier": 2,
+   "objectives_met": 1,
+   "objectives": 1,
+   "complete": true,
+   "score": 1.0,
+   "weight": 0.15,
+   "gates_opened": [
+    6,
+    4,
+    1
+   ]
+  },
+  {
+   "chamber": "foundry",
+   "tier": 3,
+   "objectives_met": 1,
+   "objectives": 3,
+   "complete": false,
+   "score": 0.1,
+   "weight": 0.25,
+   "gates_opened": [
+    2,
+    1,
+    5,
+    6,
+    3,
+    4
+   ]
+  },
+  {
+   "chamber": "works",
+   "tier": 3,
+   "objectives_met": 2,
+   "objectives": 3,
+   "complete": false,
+   "score": 0.2,
+   "weight": 0.25,
+   "gates_opened": [
+    2,
+    3,
+    5,
+    7,
+    1,
+    4
+   ]
+  }
+ ],
+ "lab_runs_used": 9,
+ "actions": 31
+}

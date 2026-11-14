@@ -82,7 +82,19 @@ prints, per opening, how many winning orders existed before and after, flags the
 
 **Harbor, local Docker, Harbor 0.26.0, tasks `crucible-001` to `003` (six chambers):** reference (`-a oracle`) 1.0000 on all three, do nothing (`-a nop`) 0.0000 on `001`. Logs are in `results/harbor/`.
 
-**No Harbor run with OpenCode exists yet.** This machine had no model API credentials, so the required agent run log is still missing. Run the third command above with a key and keep the job directory.
+**Frontier agents through Harbor and OpenCode (the official harness).** Task `crucible-001`, 9 lab runs, OpenCode at its default settings, 2 hour agent timeout. Full logs, trajectories and journals are under `results/harbor/opencode-*/`; regenerate this table with `python3 scripts/summarize_runs.py`.
+
+| Model | Trials | Rewards | Mean | Reference |
+| --- | --- | --- | --- | --- |
+| `openai/gpt-6.1-terra` | 3 | 0.675, 0.45, 0.45 | 0.525 | 1.00 |
+| `openai/gpt-6.1-sol` | 3 | 0.575, 0.575, 0.40 | 0.517 | 1.00 |
+| `openai/gpt-6-astra` | 1 | 0.575 | 0.575 | 1.00 |
+
+- **Every trial lost foundry at its first opening.** Each released the smaller reservoir first; every winning order needs the larger pour first, and the consequence only shows several openings later.
+- **Works was lost in 6 of 7 trials**, at opening 4 or 5 in the Sol and Astra runs (after several correct moves) and at opening 1 in two Terra runs.
+- Terra also lost the easy leak chamber in all three trials by pouring before plugging the hole.
+- No trial hit a tool error or a timeout. Each made about 50 tool calls, used 8 or 9 lab runs, and ended its own session after about 5 minutes, naming the chambers it had not finished.
+- Caveats: one seed, default reasoning effort, small n. Cost reported by Harbor: $2.62 for these 7 trials.
 
 **Blind pilots (not Harbor runs, and on the earlier three-chamber layout).** The pilots below played leak, cellar and works with weights 0.2, 0.3, 0.5, before float, tower and foundry were added. Their journals replay at git tag `pilots-3-chamber`, not at the current head. One pilot has played the current six-chamber layout (pilot 7, seed 41, journal `results/pilots/v3-pilot7-seed41.jsonl`, replays at the current head): reward 0.775. It completed five chambers, including the new foundry, and lost works at its sixth opening, the same way pilots 5 and 6 did: an earlier pour had pushed a resting liquid to a spot it had not predicted, and the wall-eating product then breached the wrong wall. Works is 0 for 3 across clean pilots; no other chamber type has been failed. Replay: `results/replay-pilot7-seed41.html`.
 
@@ -111,7 +123,7 @@ Note on versions: pilots 5 to 7 ran before two simulator details were made predi
 
 **With 6 lab runs: still no gap.** Pilot 10 (seed 44, budget 6, `results/pilots/v4-pilot10-seed44-lab6.jsonl`) also completed all six chambers, reward 1.00, using all 6 runs. By its own account two of its openings were gambles rather than tested knowledge, and its single-cell test of the bulk-only reaction was a false negative that it worked around by inference.
 
-**Bottom line on the current version.** Against Claude Fable 5.2 in the pilot harness, blind play scored 1.00 twice (budgets 9 and 6) and the rules-given run scored 0.80. That is 1 loss in 3 runs and not a demonstrated gap. Earlier losses (pilots 5 to 7) depended on simulator details that have since been removed because they were arbitrary. No other model and no OpenCode run has been measured.
+**Claude Fable 5.2 in the pilot harness is the exception.** Blind play scored 1.00 twice (budgets 9 and 6) and the rules-given run scored 0.80, so against that model there is no demonstrated gap. Earlier losses (pilots 5 to 7) depended on simulator details that have since been removed because they were arbitrary.
 
 Two earlier pilots (3 and 4) are kept in `results/pilots/` but are **not evidence**: at that point the bulk reaction could not be observed with any ordinary lab layout, which is missing information rather than a reasoning failure. The threshold was lowered and `tests/` now asserts that every rule a chamber depends on can be shown in the lab box.
 

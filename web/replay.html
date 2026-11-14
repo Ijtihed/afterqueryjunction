@@ -20,11 +20,11 @@
 <main style="grid-template-columns:1fr">
   <div class="duo">
     <div class="lane"><h2><select id="selA"></select><span>reward <b id="rewA"></b></span></h2>
-      <div class="stagewrap"><canvas id="cvA"></canvas></div>
+      <div class="stagewrap"><canvas id="cvA"></canvas><div class="verdict" id="verA"></div></div>
       <div class="row" style="margin-top:8px"><span class="hint">winning gate orders still possible</span><span class="big num" id="winA"></span></div>
       <div class="steps" id="stepsA"></div><div class="banner" id="msgA"></div></div>
     <div class="lane"><h2><select id="selB"></select><span>reward <b id="rewB"></b></span></h2>
-      <div class="stagewrap"><canvas id="cvB"></canvas></div>
+      <div class="stagewrap"><canvas id="cvB"></canvas><div class="verdict" id="verB"></div></div>
       <div class="row" style="margin-top:8px"><span class="hint">winning gate orders still possible</span><span class="big num" id="winB"></span></div>
       <div class="steps" id="stepsB"></div><div class="banner" id="msgB"></div></div>
   </div>
@@ -60,12 +60,18 @@ async function advance(k) {
   const x = c.steps[pos[k]], s = st[k]; s.zones = zones(k, pos[k]); s.selGate = x.gate; s.draw();
   await new Promise((r) => setTimeout(r, 650)); s.selGate = null;
   await s.play(x.frames, 50); pos[k]++;
-  if (x.fatal) { for (let f = 1; f >= 0; f -= 0.05) { s.flash = f; s.draw(); await new Promise((r) => setTimeout(r, 22)); } }
+  const v = $('ver' + k);
+  const verdict = (cls, big, small) => { v.className = 'verdict ' + cls; v.innerHTML = `<b>${big}</b><span>${small}</span>`; void v.offsetWidth; v.classList.add('show'); };
+  if (x.fatal) {
+    s.canvas.classList.remove('shake'); void s.canvas.offsetWidth; s.canvas.classList.add('shake');
+    verdict('', x.wins_before + ' → 0', `gate ${x.gate} eliminated every remaining winning order`);
+    for (let f = 1; f >= 0; f -= 0.04) { s.flash = f; s.draw(); await new Promise((r) => setTimeout(r, 22)); }
+  } else if (x.complete) verdict('win', 'Complete', 'every zone filled');
   paint(k); return true;
 }
 async function stepBoth() { const r = await Promise.all([advance('A'), advance('B')]); return r[0] || r[1]; }
 async function playAll() { if (playing) return; playing = true; while (playing && await stepBoth()) await new Promise((r) => setTimeout(r, 900)); playing = false; }
-function reset() { playing = false; pos = {A: 0, B: 0}; st.A.stop(); st.B.stop(); paint('A'); paint('B'); }
+function reset() { playing = false; pos = {A: 0, B: 0}; st.A.stop(); st.B.stop(); for (const k of ['A', 'B']) { $('ver' + k).className = 'verdict'; st[k].tctx.clearRect(0, 0, 9999, 9999); } paint('A'); paint('B'); }
 function tabs() { $('chtabs').innerHTML = ''; B.runs[0].chambers.forEach((c, n) => { const b = document.createElement('div'); b.className = 'tab' + (n === ch ? ' on' : ''); b.textContent = 'Chamber ' + (n + 1); b.onclick = () => { ch = n; tabs(); reset(); }; $('chtabs').append(b); }); }
 function labs() {
   const r = run('A'); $('labs').innerHTML = r.lab.length ? '' : '<span class="hint">no lab runs recorded</span>'; stL.setLegend(r.legend);
@@ -80,6 +86,8 @@ function init(b) {
     b.runs.map((r) => `<tr><td>${r.label}</td><td class="num">${r.score.reward.toFixed(2)}</td><td class="num">${r.score.lab_runs_used}</td>` + r.chambers.map((c, n) => { const sc = r.score.chambers[n];
       return `<td>${sc.complete ? 'complete' : sc.objectives_met + '/' + sc.objectives + ' zones'}${c.first_fatal_step ? `, fatal at step ${c.first_fatal_step} (gate ${c.steps[c.first_fatal_step - 1].gate})` : ''}</td>`; }).join('') + '</tr>').join('') + '</table>';
   tabs(); reset(); labs(); st.A.idle(); st.B.idle();
+  // #play starts playback at once (kiosk and recording use); #play2 starts on chamber 2, and so on.
+  const h = location.hash.match(/^#play(\d)?$/); if (h) { ch = h[1] ? +h[1] - 1 : 0; tabs(); reset(); playAll(); }
 }
 $('play').onclick = playAll; $('step').onclick = () => { if (!playing) stepBoth(); }; $('reset').onclick = reset;
 window.addEventListener('resize', () => { paint('A'); paint('B'); });

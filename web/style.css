@@ -82,3 +82,17 @@ table { border-collapse:collapse; width:100%; font-size:14px; } td, th { padding
 th { color:var(--dim); font-weight:500; font-size:13px; } tr:last-child td { border-bottom:0; }
 .card + .card, .duo + .card { margin-top:0; }
 main > .card { margin-top:4px; }
+
+.stagewrap { position:relative; }
+.verdict { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; pointer-events:none; opacity:0; text-align:center;
+  background:radial-gradient(closest-side, rgba(255,69,58,.42), rgba(255,69,58,.12) 60%, transparent 85%); border-radius:var(--r); }
+.verdict b { font-size:64px; font-weight:800; letter-spacing:-.04em; line-height:1; color:#fff; text-shadow:0 0 40px rgba(255,69,58,.9); }
+.verdict span { font-size:17px; font-weight:600; color:#ffd7d4; }
+.verdict.show { animation:verdict 3.4s var(--ease) forwards; }
+.verdict.win { background:radial-gradient(closest-side, rgba(48,209,88,.34), rgba(48,209,88,.1) 60%, transparent 85%); }
+.verdict.win b { text-shadow:0 0 40px rgba(48,209,88,.9); } .verdict.win span { color:#d6f8de; }
+@keyframes verdict { 0% { opacity:0; transform:scale(1.25); } 12% { opacity:1; transform:scale(1); } 78% { opacity:1; } 100% { opacity:0; } }
+canvas.shake { animation:shake .5s linear; }
+@keyframes shake { 10%,90% { transform:translate(-2px,1px); } 20%,80% { transform:translate(4px,-2px); } 30%,50%,70% { transform:translate(-7px,3px); } 40%,60% { transform:translate(7px,-3px); } }
+.big { transition:color .4s var(--ease); }
+.stagewrap { overflow:hidden; }

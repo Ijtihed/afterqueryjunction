@@ -10,6 +10,7 @@
     constructor(canvas, opts = {}) {
       this.canvas = canvas; this.ctx = canvas.getContext('2d');
       this.glow = document.createElement('canvas'); this.gctx = this.glow.getContext('2d');
+      this.trail = document.createElement('canvas'); this.tctx = this.trail.getContext('2d');
       this.legend = opts.legend || {}; this.maxCell = opts.maxCell || 30;
       this.zones = []; this.rows = null; this.selGate = null; this.flash = 0; this.dim = false;
       this.onCell = null; this._timer = null; this.t0 = performance.now();
@@ -29,16 +30,18 @@
       const dpr = window.devicePixelRatio || 1;
       if (this.w === w && this.h === h && this.cell === cell) return;
       this.w = w; this.h = h; this.cell = cell;
-      for (const c of [this.canvas, this.glow]) { c.width = w * cell * dpr; c.height = h * cell * dpr; }
+      for (const c of [this.canvas, this.glow, this.trail]) { c.width = w * cell * dpr; c.height = h * cell * dpr; }
       this.canvas.style.width = w * cell + 'px'; this.canvas.style.height = h * cell + 'px';
-      this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0); this.gctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0); this.gctx.setTransform(dpr, 0, 0, dpr, 0, 0); this.tctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
     draw(rows) {
-      if (rows) this.rows = rows; rows = this.rows; if (!rows) return;
+      const fresh = !!rows; if (rows) this.rows = rows; rows = this.rows; if (!rows) return;
       const h = rows.length, w = rows[0].length; this.fit(w, h);
       const s = this.cell, ctx = this.ctx, g = this.gctx, now = (performance.now() - this.t0) / 1000;
       ctx.fillStyle = '#050506'; ctx.fillRect(0, 0, w * s, h * s);
       g.clearRect(0, 0, w * s, h * s);
+      // Trail layer: each new frame fades the last, so moving matter leaves a short wake.
+      const t = this.tctx; if (fresh) { t.globalCompositeOperation = 'destination-out'; t.fillStyle = 'rgba(0,0,0,0.2)'; t.fillRect(0, 0, w * s, h * s); t.globalCompositeOperation = 'source-over'; }
       for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
         const c = rows[y][x], px = x * s, py = y * s, n = hash(x, y);
         if (c === EMPTY) { if (n > 0.93) { ctx.fillStyle = 'rgba(120,150,190,0.05)'; ctx.fillRect(px + s * .45, py + s * .45, 1.5, 1.5); } continue; }
@@ -60,7 +63,10 @@
         const col = (this.legend[c] && this.legend[c].color) || '#9aa4b2';
         ctx.fillStyle = shade(col, 0.9 + n * 0.14); ctx.beginPath(); ctx.roundRect(px + 0.75, py + 0.75, s - 1.5, s - 1.5, s * 0.22); ctx.fill();
         g.fillStyle = col; g.fillRect(px, py, s, s);
+        if (fresh) { t.fillStyle = col; t.fillRect(px, py, s, s); }
       }
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.34; ctx.filter = `blur(${Math.max(2, s * 0.3)}px)`;
+      ctx.drawImage(this.trail, 0, 0, w * s, h * s); ctx.restore();
       ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.26; ctx.filter = `blur(${Math.max(3, s * 0.45)}px)`;
       ctx.drawImage(this.glow, 0, 0, w * s, h * s); ctx.restore();
       for (const z of this.zones) {

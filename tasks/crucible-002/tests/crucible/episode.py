@@ -1,4 +1,4 @@
-"""Episode state machine: one hidden matter skin, a budgeted lab, and five
+"""Episode state machine: one hidden matter skin, a budgeted lab, and six
 one-shot chambers. Every accepted action is appended to a journal, and an
 episode can be rebuilt from (seed, journal) alone."""
 from __future__ import annotations
@@ -12,9 +12,9 @@ from .chambers import (BASE_ROLES, ROLE_ID, TEMPLATES, Chamber, Skin, build, fam
 from .engine import EMPTY, GATE, MAT0, WALL, World, settle
 from .oracle import apply_open
 
-LAB_W, LAB_H, LAB_RUNS = 8, 6, 7
-TIER_PLAN = [(1, 2), (2, 2), (3, 1)]  # (tier, chambers drawn without repeats)
-WEIGHTS = {1: 0.1, 2: 0.2, 3: 0.4}
+LAB_W, LAB_H, LAB_RUNS = 8, 6, 9
+TIER_PLAN = [(1, 2), (2, 2), (3, 2)]  # (tier, chambers drawn without repeats)
+WEIGHTS = {1: 0.1, 2: 0.15, 3: 0.25}
 PARTIAL = 0.3
 DEFAULT_SALT = "crucible-public-v1"
 MAX_FRAMES_KEPT = 600

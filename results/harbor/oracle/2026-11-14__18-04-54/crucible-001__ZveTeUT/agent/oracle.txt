@@ -1,7 +1,0 @@
-identified roles: {'H': 's', 'A': 'a', 'D': 'k', 'F': 'w', 'J': 'e', 'B': 'q', 'E': 'o', 'C': 'g'}
-chamber 1: plan [2, 3]
-chamber 1: complete
-chamber 2: plan [4, 2]
-chamber 2: complete
-chamber 3: plan [1, 2, 5, 7, 6, 3]
-chamber 3: complete

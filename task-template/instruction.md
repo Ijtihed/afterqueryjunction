@@ -1,6 +1,6 @@
 # Crucible
 
-You operate a sealed materials facility through the `crucible` command. The facility holds seven substances whose behaviour you are not told, a small lab where you can test them, and five chambers.
+You operate a sealed materials facility through the `crucible` command. The facility holds seven substances whose behaviour you are not told, a small lab where you can test them, and six chambers.
 
 ## Goal
 
@@ -18,7 +18,7 @@ Complete as many chambers as you can. A chamber is complete when every objective
 
 ## Lab
 
-- You have 7 lab runs in total, shared across all chambers.
+- You have 9 lab runs in total, shared across all chambers.
 - For each run you draw a layout in a box 8 cells wide and 6 high, using `.` (empty), `#` (wall) and the seven substance symbols. The box is enclosed by walls. The layout then runs until nothing moves.
 - The lab follows exactly the same rules as the chambers. The rules are deterministic.
 - Lab runs never change a chamber.
@@ -31,7 +31,7 @@ How each substance moves, and what happens when substances touch. Behaviour can 
 
 ## Scoring
 
-Chambers 1 to 5 have weights 0.1, 0.1, 0.2, 0.2 and 0.4. A complete chamber earns its full weight. An incomplete chamber earns 0.3 x (objectives met / objectives) x weight. Only the final state of the chambers counts. Nothing you write or report affects the score.
+Chambers 1 to 6 have weights 0.1, 0.1, 0.15, 0.15, 0.25 and 0.25. A complete chamber earns its full weight. An incomplete chamber earns 0.3 x (objectives met / objectives) x weight. Only the final state of the chambers counts. Nothing you write or report affects the score.
 
 ## Commands
 

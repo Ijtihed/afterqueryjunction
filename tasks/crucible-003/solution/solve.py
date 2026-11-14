@@ -41,8 +41,8 @@ def columns(spec):
 
 
 def identify(symbols):
-    """Five lab runs: two for how each substance moves alone, three for the
-    contacts that tell apart substances that move alike."""
+    """Six lab runs: two for how each substance moves alone, three for the
+    contacts that tell apart substances that move alike, one for the crust."""
     cols = columns([{2: s} for s in symbols[:4]]) + columns([{2: s} for s in symbols[4:]])
     down, up, static = [], [], []
     for s, col in zip(symbols, cols):
@@ -63,7 +63,14 @@ def identify(symbols):
         if len(left) == 1:
             role[d], role[u], role[left[0]] = "w", "e", "q"
     role[next(d for d in liquids if d not in role)] = "o"
-    role[next(u for u in up if u not in role)] = "g"
+    g = next(u for u in up if u not in role)
+    role[g] = "g"
+    # The crust only forms in bulk, so it needs its own three-against-three run.
+    w = next(sym for sym, r in role.items() if r == "w")
+    end = call("lab", rows=[w * 3, "", g * 3])["end"]
+    new = {c for row in end for c in row} - set(role) - set("#.")
+    assert len(new) == 1, new
+    role[new.pop()] = "x"
     return role
 
 

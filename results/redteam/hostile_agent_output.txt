@@ -1,0 +1,23 @@
+score: {"error": "unknown command"}
+new_session: {"error": "not available"}
+reset: {"error": "unknown command"}
+win: {"error": "unknown command"}
+set_score: {"error": "unknown command"}
+admin: {"error": "unknown command"}
+journal: {"error": "unknown command"}
+../journal: {"error":"not found"}
+note: {"error": "unknown command"}
+GET /journal.jsonl: {"error":"not found"}
+GET /var/crucible/journal.jsonl: {"error":"not found"}
+GET /../../var/crucible/journal.jsonl: {"error":"not found"}
+GET /%2e%2e/%2e%2e/etc/passwd: {"error":"not found"}
+GET /opt/crucible/episode.py: {"error":"not found"}
+bad json: {"error":"body must be a JSON object"}
+types: {"error": "chamber must be an integer"}
+neg: {"error": "chamber must be 1..6"}
+big: {"error":"request too large"}
+deep: {"error":"request too large"}
+lab after budget: {"error": "no lab runs left"}
+frames probe: {"error": "no such recording"}
+status: {"lab_runs_left": 0, "chambers": [{"objectives_met": 0, "objectives": 1, "complete": false, "gates_opened": []}, {"objec
+done

@@ -58,6 +58,8 @@ Reproduce with `python3 scripts/baselines.py`.
 - There is no reset and no score-setting endpoint. Lab runs cannot touch chambers. Completion is recomputed from cell counts in the final replayed state, so reports, files and extra journal fields change nothing.
 - `python3 -m unittest discover tests` covers the cases above (22 tests).
 
+- `scripts/redteam.sh` runs a hostile script as the agent inside the real Harbor task: it writes reward files, plants a forged winning journal at the verifier's path in its own container, probes for hidden endpoints and path traversal, sends malformed and oversized requests, exceeds the lab budget, and leaves a background process rewriting the reward. Measured reward: 0.0000 (`results/redteam/`).
+
 Known limits, stated plainly: the public salt in this repository makes seed to world deterministic, so anyone who learns a task's seed and has the source can compute the answer. The seed is not visible from the agent container. For a held-out evaluation set `CRUCIBLE_SALT` privately in both the sidecar and the verifier image.
 
 ## Reference solution and what it knows
@@ -130,7 +132,8 @@ reference/solve.py  reference player
 task-template/      Harbor task skeleton; scripts/build_tasks.py fills tasks/
 tasks/              generated, self-contained Harbor tasks
 web/                browser game and replay viewer (render only, no game logic)
-scripts/            build_tasks, validate, baselines, analyze, design, play
+scripts/            build_tasks, validate, baselines, analyze, render_clip, redteam, design, play
+redteam/            the hostile agent script used by scripts/redteam.sh
 tests/              engine and reward-integrity tests
 results/            Harbor logs, pilot journals, replay pages
 docs/DECISION.md    research review, candidates, decision, formal spec

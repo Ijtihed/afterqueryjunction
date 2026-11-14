@@ -13,10 +13,12 @@
 #define SOLID 0
 #define POWDER 1
 #define LIQUID 2
+#define PUSHED_LEFT 2  /* aux bits; cleared whenever the cell moves any other way */
+#define PUSHED_RIGHT 4
 
 typedef struct {
     int w, h, tick;
-    uint8_t *cell, *aux; /* aux: bit0 = prefers right */
+    uint8_t *cell, *aux; /* aux: bit0 = prefers right, bits1-2 = last pressure push */
     const int8_t *phase, *grav;
     const int16_t *dens;
     const uint8_t *rx, *rxneed;
@@ -104,7 +106,11 @@ static int try_cell(Sim *s, int x, int y) {
             /* Only its own kind stacked above pushes a liquid sideways, so a
              * different liquid poured on top does not shove it around. */
             if (s->cell[py * w + bx] == t) {
-                swap_cells(s, i, y * w + nx, dx > 0 ? 1 : 0);
+                /* A cell is never pushed back the way it was just pushed, or
+                 * two trapped stacks would shuttle it between them forever. */
+                uint8_t back = dx > 0 ? PUSHED_LEFT : PUSHED_RIGHT;
+                if (a & back) break;
+                swap_cells(s, i, y * w + nx, (uint8_t)((dx > 0 ? 1 : 0) | (dx > 0 ? PUSHED_RIGHT : PUSHED_LEFT)));
                 return 1;
             }
         }

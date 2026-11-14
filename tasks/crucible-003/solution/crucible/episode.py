@@ -1,4 +1,4 @@
-"""Episode state machine: one hidden matter skin, a budgeted lab, and six
+"""Episode state machine: one hidden matter skin, a budgeted lab, and three
 one-shot chambers. Every accepted action is appended to a journal, and an
 episode can be rebuilt from (seed, journal) alone."""
 from __future__ import annotations
@@ -13,8 +13,8 @@ from .engine import EMPTY, GATE, MAT0, WALL, World, settle
 from .oracle import apply_open
 
 LAB_W, LAB_H, LAB_RUNS = 8, 6, 9
-TIER_PLAN = [(1, 2), (2, 2), (3, 2)]  # (tier, chambers drawn without repeats)
-WEIGHTS = {1: 0.1, 2: 0.15, 3: 0.25}
+TIER_PLAN = [(3, 3)]  # (tier, chambers drawn without repeats)
+WEIGHTS = {3: 1 / 3}
 PARTIAL = 0.3
 DEFAULT_SALT = "crucible-public-v1"
 MAX_FRAMES_KEPT = 600
@@ -88,7 +88,7 @@ class Episode:
             "note": "Other substances may appear when substances touch. Their symbols are shown when they exist.",
             "lab": {"width": LAB_W, "height": LAB_H, "runs_total": self.lab_budget, "runs_left": self.lab_budget - len(self.lab_runs)},
             "chambers": [self.view(i, grid=False) for i in range(len(self.chambers))],
-            "scoring": {"weights": [WEIGHTS[c.tier] for c in self.chambers], "partial_factor": PARTIAL},
+            "scoring": {"weights": [round(WEIGHTS[c.tier], 3) for c in self.chambers], "partial_factor": PARTIAL},
         }
 
     def view(self, idx: int, grid: bool = True) -> dict:
@@ -201,7 +201,7 @@ class Episode:
             met = ch.met()
             s = 1.0 if all(met) else PARTIAL * sum(met) / len(met)
             per.append({"chamber": ch.name, "tier": ch.tier, "objectives_met": sum(met), "objectives": len(met),
-                        "complete": all(met), "score": round(s, 4), "weight": WEIGHTS[ch.tier],
+                        "complete": all(met), "score": round(s, 4), "weight": round(WEIGHTS[ch.tier], 4),
                         "gates_opened": list(ch.opened)})
             total += WEIGHTS[ch.tier] * s
         return {"reward": round(min(1.0, max(0.0, total)), 4), "chambers": per,

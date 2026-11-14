@@ -1,6 +1,6 @@
 # Crucible
 
-You operate a sealed materials facility through the `crucible` command. The facility holds seven substances whose behaviour you are not told, a small lab where you can test them, and six chambers.
+You operate a sealed materials facility through the `crucible` command. The facility holds seven substances whose behaviour you are not told, a small lab where you can test them, and three chambers.
 
 ## Goal
 
@@ -31,7 +31,7 @@ How each substance moves, and what happens when substances touch. Behaviour can 
 
 ## Scoring
 
-Chambers 1 to 6 have weights 0.1, 0.1, 0.15, 0.15, 0.25 and 0.25. A complete chamber earns its full weight. An incomplete chamber earns 0.3 x (objectives met / objectives) x weight. Only the final state of the chambers counts. Nothing you write or report affects the score.
+Each of the three chambers has weight 1/3. A complete chamber earns its full weight. An incomplete chamber earns 0.3 x (objectives met / objectives) x weight. Only the final state of the chambers counts. Nothing you write or report affects the score.
 
 ## Commands
 

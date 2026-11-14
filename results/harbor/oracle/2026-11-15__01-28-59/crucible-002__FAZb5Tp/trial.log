@@ -1,0 +1,6 @@
+Skipping image OS validation for hb__e785f869a767efa28f84232f5ec8fa64: docker inspect returned 1
+Collecting main service artifacts
+Stopping main service before sidecar evidence collection
+Main service stopped
+Collecting sidecar artifacts from services: ['sim']
+Skipping image OS validation for hb__673fe6b8152b59770c9c2634681a08b5: docker inspect returned 1

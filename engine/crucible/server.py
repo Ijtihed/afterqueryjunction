@@ -16,8 +16,8 @@ LOCK = threading.Lock()
 
 
 class Session:
-    def __init__(self, seed: int, salt: str, journal_path: str, meta: dict | None = None):
-        self.ep = Episode(seed, salt)
+    def __init__(self, seed: int, salt: str, journal_path: str, meta: dict | None = None, lab_budget: int = 0):
+        self.ep = Episode(seed, salt, lab_budget=lab_budget)
         self.path = journal_path
         self.meta = meta or {}
         os.makedirs(os.path.dirname(journal_path) or ".", exist_ok=True)
@@ -44,7 +44,7 @@ class App:
         self.args = args
         self.sessions: dict = {}
         if not args.play:
-            self.sessions["default"] = Session(args.seed, args.salt, os.path.join(args.data, "journal.jsonl"))
+            self.sessions["default"] = Session(args.seed, args.salt, os.path.join(args.data, "journal.jsonl"), lab_budget=args.lab_runs)
 
     def session(self, body: dict) -> Session:
         sid = body.get("session", "default")
@@ -61,7 +61,7 @@ class App:
                 raise ActionError("seed must be an integer")
             player = "".join(c for c in str(body.get("player", "anon"))[:24] if c.isalnum() or c in "-_") or "anon"
             sid = f"{time.strftime('%Y%m%d-%H%M%S')}-{player}-s{seed}"
-            s = Session(seed, self.args.salt, os.path.join(self.args.data, "sessions", sid + ".jsonl"), {"timestamps": True})
+            s = Session(seed, self.args.salt, os.path.join(self.args.data, "sessions", sid + ".jsonl"), {"timestamps": True}, lab_budget=self.args.lab_runs)
             self.sessions[sid] = s
             return {"session": sid, "seed": seed}
         s = self.session(body)
@@ -175,6 +175,7 @@ def main():
     ap.add_argument("--seed", type=int, default=int(os.environ.get("CRUCIBLE_SEED", "1")))
     ap.add_argument("--salt", default=os.environ.get("CRUCIBLE_SALT", DEFAULT_SALT))
     ap.add_argument("--data", default=os.environ.get("CRUCIBLE_DATA", "/var/crucible"))
+    ap.add_argument("--lab-runs", type=int, default=int(os.environ.get("CRUCIBLE_LAB_RUNS", "0")), help="lab budget; 0 = default")
     ap.add_argument("--port", type=int, default=8000)
     ap.add_argument("--host", default="0.0.0.0")
     ap.add_argument("--play", action="store_true", help="human playtest mode: sessions, web UI, score endpoint")

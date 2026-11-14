@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Generate self-contained Harbor task directories, one per seed.
 
-Usage: python3 scripts/build_tasks.py [seed ...] [--rules]
+Usage: python3 scripts/build_tasks.py [seed ...] [--rules] [--lab-runs N]
+
+--lab-runs N sets the lab budget (default 9) and adds a -labN suffix.
 
 --rules also writes a <name>-rules variant whose instruction discloses the
 facility's true substance behaviour (the rule-discovery ablation).
@@ -14,6 +16,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ENGINE = os.path.join(ROOT, "engine", "crucible")
 ENGINE_FILES = ["__init__.py", "core.c", "engine.py", "chambers.py", "templates.py", "oracle.py", "episode.py", "server.py"]
 DEFAULT_SEEDS = [1, 2, 3, 4, 5]
+DEFAULT_LAB = 9
 
 
 def copy_engine(dst, files=ENGINE_FILES):
@@ -47,22 +50,26 @@ def rules_card(seed: int) -> str:
     return "\n".join(out) + "\n"
 
 
-def build(seed: int, rules: bool = False) -> str:
-    name = f"crucible-{seed:03d}" + ("-rules" if rules else "")
+def build(seed: int, rules: bool = False, lab: int = DEFAULT_LAB) -> str:
+    name = f"crucible-{seed:03d}" + (f"-lab{lab}" if lab != DEFAULT_LAB else "") + ("-rules" if rules else "")
     out = os.path.join(ROOT, "tasks", name)
     shutil.rmtree(out, ignore_errors=True)
     shutil.copytree(os.path.join(ROOT, "task-template"), out)
     for rel in ("task.toml", "environment/docker-compose.yaml"):
         p = os.path.join(out, rel)
-        s = open(p).read().replace("__SEED__", str(seed)).replace("__NAME__", name)
+        s = open(p).read().replace("__SEED__", str(seed)).replace("__NAME__", name).replace("__LAB__", str(lab))
         open(p, "w").write(s)
+    ip = os.path.join(out, "instruction.md")
+    text = open(ip).read()
+    assert "You have 9 lab runs" in text
+    open(ip, "w").write(text.replace("You have 9 lab runs", f"You have {lab} lab runs"))
     if rules:
         with open(os.path.join(out, "instruction.md"), "a") as f:
             f.write(rules_card(seed))
     shutil.copy(os.path.join(ROOT, "client", "crucible"), os.path.join(out, "environment", "crucible"))
     copy_engine(os.path.join(out, "environment", "sim", "crucible"))
     copy_engine(os.path.join(out, "tests", "crucible"), [f for f in ENGINE_FILES if f != "server.py"])
-    open(os.path.join(out, "tests", "seed.txt"), "w").write(f"{seed}\n")
+    open(os.path.join(out, "tests", "seed.txt"), "w").write(f"{seed} {lab}\n")
     copy_engine(os.path.join(out, "solution", "crucible"), [f for f in ENGINE_FILES if f != "server.py"])
     shutil.copy(os.path.join(ROOT, "reference", "solve.py"), os.path.join(out, "solution", "solve.py"))
     for rel in ("tests/test.sh", "solution/solve.sh", "environment/crucible"):
@@ -71,8 +78,12 @@ def build(seed: int, rules: bool = False) -> str:
 
 
 if __name__ == "__main__":
-    seeds = [int(a) for a in sys.argv[1:] if a.isdigit()] or DEFAULT_SEEDS
+    args = sys.argv[1:]
+    lab = int(args[args.index("--lab-runs") + 1]) if "--lab-runs" in args else DEFAULT_LAB
+    if "--lab-runs" in args:
+        del args[args.index("--lab-runs"):args.index("--lab-runs") + 2]
+    seeds = [int(a) for a in args if a.isdigit()] or DEFAULT_SEEDS
     for s in seeds:
-        print(build(s))
-        if "--rules" in sys.argv:
-            print(build(s, rules=True))
+        print(build(s, lab=lab))
+        if "--rules" in args:
+            print(build(s, rules=True, lab=lab))

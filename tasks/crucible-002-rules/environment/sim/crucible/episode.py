@@ -29,8 +29,10 @@ class Episode:
     seed: int
     salt: str = DEFAULT_SALT
     journal: list = field(default_factory=list)
+    lab_budget: int = 0  # 0 means the default LAB_RUNS
 
     def __post_init__(self):
+        self.lab_budget = self.lab_budget or LAB_RUNS
         self.phys = family_physics()
         self.skin: Skin = make_skin(rng_for(self.seed, self.salt, "skin"))
         r = rng_for(self.seed, self.salt, "chambers")
@@ -84,7 +86,7 @@ class Episode:
         return {
             "substances": sorted((self.substance(i) for i in self.base_ids), key=lambda s: s["symbol"]),
             "note": "Other substances may appear when substances touch. Their symbols are shown when they exist.",
-            "lab": {"width": LAB_W, "height": LAB_H, "runs_total": LAB_RUNS, "runs_left": LAB_RUNS - len(self.lab_runs)},
+            "lab": {"width": LAB_W, "height": LAB_H, "runs_total": self.lab_budget, "runs_left": self.lab_budget - len(self.lab_runs)},
             "chambers": [self.view(i, grid=False) for i in range(len(self.chambers))],
             "scoring": {"weights": [WEIGHTS[c.tier] for c in self.chambers], "partial_factor": PARTIAL},
         }
@@ -116,7 +118,7 @@ class Episode:
         return self.chambers[idx]
 
     def lab(self, rows, record: bool = True) -> dict:
-        if len(self.lab_runs) >= LAB_RUNS:
+        if len(self.lab_runs) >= self.lab_budget:
             raise ActionError("no lab runs left")
         if not isinstance(rows, list) or not rows or len(rows) > LAB_H or not all(isinstance(r, str) for r in rows):
             raise ActionError(f"layout must be 1..{LAB_H} text rows")
@@ -149,7 +151,7 @@ class Episode:
         if record:
             self.journal.append({"t": "lab", "rows": rows})
         self.last_frames[("lab", n)] = (world.w, world.h, world.gate, None, res.frames[:MAX_FRAMES_KEPT], start)
-        return {"run": n, "runs_left": LAB_RUNS - n, "ticks": res.ticks, "came_to_rest": res.settled,
+        return {"run": n, "runs_left": self.lab_budget - n, "ticks": res.ticks, "came_to_rest": res.settled,
                 "start": start, "end": self.rows(world), "reactions": self._reactions(res.reactions, {}, {}),
                 "note": "The lab box is enclosed by walls on all four sides (shown)."}
 
@@ -206,10 +208,10 @@ class Episode:
                 "lab_runs_used": len(self.lab_runs)}
 
 
-def replay(seed: int, journal: list, salt: str = DEFAULT_SALT) -> Episode:
+def replay(seed: int, journal: list, salt: str = DEFAULT_SALT, lab_budget: int = 0) -> Episode:
     """Rebuild an episode by re-executing a journal. Raises ActionError on any
     entry the rules would not have allowed."""
-    ep = Episode(seed, salt)
+    ep = Episode(seed, salt, lab_budget=lab_budget)
     if not isinstance(journal, list):
         raise ActionError("journal must be a list")
     for e in journal:

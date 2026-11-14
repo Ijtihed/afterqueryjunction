@@ -105,6 +105,8 @@ What happened, in order:
 
 Note on versions: pilots 5 to 7 ran before two simulator details were made predictable (commit `16643df`); pilot 8 ran after. Journals from before that commit replay at `b7750c9` or the `pilots-3-chamber` tag.
 
+**After the cleanup, with 9 lab runs: no gap.** Pilot 9 (seed 43, `results/pilots/v4-pilot9-seed43.jsonl`) completed all six chambers, reward 1.00, using 7 of 9 lab runs, most of them as miniature rehearsals of risky chamber steps. With lab runs to spare, the strongest model tested solves the task. The lab budget is therefore a task parameter (`scripts/build_tasks.py --lab-runs N`, tasks named `-labN`); the reference needs 6 and scores 1.0 through Harbor at 6.
+
 Two earlier pilots (3 and 4) are kept in `results/pilots/` but are **not evidence**: at that point the bulk reaction could not be observed with any ordinary lab layout, which is missing information rather than a reasoning failure. The threshold was lowered and `tests/` now asserts that every rule a chamber depends on can be shown in the lab box.
 
 Caveats: n = 2 on version 2, one model, a pilot harness rather than OpenCode, and seeds differ only in skin, mirroring, chamber order and gate numbers. Treat it as a pilot signal, not a measured gap. 

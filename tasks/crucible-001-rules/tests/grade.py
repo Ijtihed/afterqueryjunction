@@ -11,8 +11,8 @@ MAX_BYTES = 4 * 1024 * 1024
 
 
 def main():
-    seed = int(open("/tests/seed.txt").read().strip())
-    details = {"seed": seed}
+    seed, lab_budget = (int(v) for v in open("/tests/seed.txt").read().split())
+    details = {"seed": seed, "lab_budget": lab_budget}
     reward = 0.0
     try:
         with open(JOURNAL, "rb") as f:
@@ -20,7 +20,7 @@ def main():
         if len(raw) > MAX_BYTES:
             raise ActionError("journal too large")
         journal = [json.loads(line) for line in raw.decode("utf-8").splitlines() if line.strip()]
-        ep = replay(seed, journal)
+        ep = replay(seed, journal, lab_budget=lab_budget)
         score = ep.score()
         reward = float(score["reward"])
         details.update(score)

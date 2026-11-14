@@ -1,4 +1,4 @@
-"""Episode state machine: one hidden matter skin, a budgeted lab, and three
+"""Episode state machine: one hidden matter skin, a budgeted lab, and five
 one-shot chambers. Every accepted action is appended to a journal, and an
 episode can be rebuilt from (seed, journal) alone."""
 from __future__ import annotations
@@ -13,7 +13,8 @@ from .engine import EMPTY, GATE, MAT0, WALL, World, settle
 from .oracle import apply_open
 
 LAB_W, LAB_H, LAB_RUNS = 8, 6, 7
-WEIGHTS = {1: 0.2, 2: 0.3, 3: 0.5}
+TIER_PLAN = [(1, 2), (2, 2), (3, 1)]  # (tier, chambers drawn without repeats)
+WEIGHTS = {1: 0.1, 2: 0.2, 3: 0.4}
 PARTIAL = 0.3
 DEFAULT_SALT = "crucible-public-v1"
 MAX_FRAMES_KEPT = 600
@@ -34,11 +35,12 @@ class Episode:
         self.skin: Skin = make_skin(rng_for(self.seed, self.salt, "skin"))
         r = rng_for(self.seed, self.salt, "chambers")
         self.chambers: list = []
-        for tier in (1, 2, 3):
+        for tier, count in TIER_PLAN:
             pool = [t for t in TEMPLATES if t.tier == tier]
-            ch = build(r.choice(pool), r.random() < 0.5)
-            relabel_gates(ch, r)
-            self.chambers.append(ch)
+            for t in r.sample(pool, count):
+                ch = build(t, r.random() < 0.5)
+                relabel_gates(ch, r)
+                self.chambers.append(ch)
         self.initial = [c.copy() for c in self.chambers]
         self.lab_runs: list = []
         self.last_frames: dict = {}

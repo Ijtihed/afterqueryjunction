@@ -44,7 +44,7 @@ REACTIONS = [
 
 SYMBOLS = "ABCDEFGHJK"
 NAMES = ["Vex", "Oru", "Kith", "Zam", "Ylo", "Bren", "Quil", "Tosk", "Ixa", "Mur", "Dael", "Fyn"]
-COLORS = ["#ff4fa3", "#35e0d0", "#ffd23f", "#8f7bff", "#ff7a3c", "#7dff6b", "#4fa8ff", "#e8e8f0", "#c9966b", "#ff5a5a"]
+COLORS = ["#ff375f", "#64d2ff", "#ffd60a", "#bf5af2", "#ff9f0a", "#30d158", "#0a84ff", "#e5e5ea", "#ac8e68", "#ff6961"]
 
 
 def family_physics() -> Physics:

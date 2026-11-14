@@ -96,7 +96,7 @@ class RewardIntegrity(unittest.TestCase):
         self.assertEqual(reward(1, [{"t": "lab", "rows": [s]}] * LAB_RUNS), 0.0)
 
     def test_close_everything_is_zero(self):
-        self.assertEqual(reward(1, [{"t": "close", "chamber": c} for c in (1, 2, 3)]), 0.0)
+        self.assertEqual(reward(1, [{"t": "close", "chamber": c} for c in (1, 2, 3, 4, 5)]), 0.0)
 
     def test_strict_prefixes_never_beat_completion(self):
         for seed in SEEDS:
@@ -143,7 +143,7 @@ class RewardIntegrity(unittest.TestCase):
             j + [j[0]],                                              # reopen a gate / act on a complete chamber
             [{"t": "open", "chamber": 1, "gate": 99}],
             [{"t": "open", "chamber": 0, "gate": 1}],
-            [{"t": "open", "chamber": 4, "gate": 1}],
+            [{"t": "open", "chamber": 6, "gate": 1}],
             [{"t": "open", "chamber": True, "gate": 1}],
             [{"t": "open", "chamber": 1, "gate": "1"}],
             [{"t": "open", "chamber": 1, "gate": 1.0}],
@@ -194,7 +194,7 @@ class RewardIntegrity(unittest.TestCase):
 
     def test_completion_locks_chamber(self):
         ep = replay(1, winning_journal(1))
-        for i in range(3):
+        for i in range(5):
             with self.assertRaises(ActionError):
                 ep.open(i, ep.initial[i].gates[0])
 
@@ -202,7 +202,7 @@ class RewardIntegrity(unittest.TestCase):
 class OracleDiagnostics(unittest.TestCase):
     def test_first_fatal_move_is_flagged(self):
         ep = Episode(1)
-        ch = ep.chambers[2]
+        ch = ep.chambers[4]
         o = Oracle(ep.phys)
         fatal = [g for g, n in o.options(ch).items() if n == 0]
         self.assertTrue(fatal)

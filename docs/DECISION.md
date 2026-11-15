@@ -57,10 +57,12 @@ Crucible. It is the only candidate that combines the two findings that survive c
 - **Observation.** Full grid, zones, objective counts, a reaction log, and tick-by-tick recordings on request. Hidden: substance behaviour and reactions.
 - **Goal and reward.** A chamber is complete when every zone holds its required count. Reward is the mean of the three chamber scores, where an incomplete chamber earns 0.3 times its fraction of zones met.
 - **Generator.** Seed chooses skin, mirror flip and gate numbering per chamber template. `scripts/validate.py` checks each seed exhaustively.
-- **Solver.** `Oracle` enumerates gate orders with memoisation. The reference player identifies roles with five lab runs through the public interface, then plans with the oracle.
+- **Solver.** `Oracle` enumerates gate orders with memoisation. The reference player identifies roles with six lab runs through the public interface, then plans with the oracle.
 - **Diagnostics.** For every opening in a journal: winning orders before and after, whether it was the first fatal move, and which gates would have kept the chamber solvable.
 
 ## G. Concrete first playable puzzle
+
+This was the first chamber built. It is no longer part of the shipped tasks (see section K) but remains in `templates.py`.
 
 Chamber "leak" (unflipped): a basin whose floor has a one-cell hole above a sump. Gate 1 holds the carrier liquid, gate 2 a heavy powder directly above the hole, gate 3 a solvent that destroys the powder. Zone Z1 is the basin and needs 12 cells of the liquid. Winning orders, found by enumeration: (2, 1), (2, 3, 1), (3, 2, 1). Opening gate 1 first drains every liquid cell into the sump and no order recovers. Check it with `python3 scripts/design.py leak`.
 
@@ -68,12 +70,23 @@ Chamber "leak" (unflipped): a basin whose floor has a one-cell hole above a sump
 
 `engine/crucible/` is the single source: `core.c` (simulation), `engine.py` (ctypes binding), `chambers.py` and `templates.py` (matter family, chambers), `episode.py` (state machine, journal, scoring, replay), `oracle.py`, `server.py`. `scripts/build_tasks.py` copies it into self-contained Harbor task directories: `environment/` (agent container with only the CLI, plus the `sim` sidecar), `tests/` (separate verifier image that replays the sidecar journal with its own build), `solution/` (reference player). `web/` renders symbol grids produced by the engine and holds no game logic.
 
-## I. Milestones (all done unless marked)
+## I. Milestones
 
-Simulation core, oracle, three verified chambers, server and CLI, reference player, Harbor oracle run, reward-integrity tests, blind pilots, playtest page, replay viewer, rules-given variant. Not done: real Harbor runs with OpenCode (no model credentials on this machine), human playtests, demo video, small-model training.
+Done: simulation core, oracle, chamber set, server and CLI, reference player, Harbor reference and do-nothing runs, reward-integrity tests, hostile-agent check, blind pilots, 27 agent trials through Harbor and OpenCode, playtest page, replay viewer, clip renderer, rules-given and 9-run task variants. Not done: human playtests, demo video, small-model training.
 
 ## J. Risks and kill criteria
 
-- **A top model solves it.** Triggered once already: two blind pilots scored 1.0 on version 1, which led to the harder version 2. Version 2 pilots scored 0.55 and 0.60, but on simulator details later removed as arbitrary; on the cleaned version blind pilots scored 1.00 twice (lab budgets 9 and 6), so this criterion is triggered again. If strong models solve version 2 through Harbor, report that plainly and scale the chamber generator rather than tighten budgets arbitrarily.
-- **Humans cannot do chamber 3.** Then the demo puzzle is chamber 2 and chamber 3 is presented as the agent-facing tier.
-- **Reference advantage.** The reference knows the matter family. This is disclosed; the fair comparison is first-time humans plus the rules-given ablation.
+- **A top model solves it.** Triggered twice during development (see K). On the shipped tasks no OpenAI trial completed a facility in 12 attempts; Claude Fable 5.2 has not been run on them.
+- **Humans cannot do it.** Untested. The shipped tasks are three hard chambers, so this risk is real.
+- **Reference advantage.** The reference knows the matter family. This is disclosed, and the `-rules` variants exist to measure planning without discovery.
+
+## K. What changed after the decision, and why
+
+1. **Version 1 had no gap.** Two blind Claude pilots scored 1.00 by rehearsing every risky step in a generous lab. Response: smaller lab, fewer runs, a bulk-only reaction, a three-step reaction chain that eats walls.
+2. **A fairness bug.** The bulk reaction could not be observed with any ordinary lab layout. The threshold was lowered and tests now assert that every rule is observable in the lab.
+3. **Two arbitrary details removed.** Pilot losses traced to which wall the corrosive attacked first and to liquids being shoved by a different liquid. Both were made predictable, after which the strongest Claude pilot solved the six-chamber layout.
+4. **Real agents measured.** Through Harbor and OpenCode, OpenAI models cleared the easy and medium chambers and lost the hard ones, so the easy and medium tiers were dropped and a third hard chamber (refinery) was added.
+5. **Lab budget set to 6.** At 9 runs `gpt-6.1-sol` scored 1.00 once and 0.73 twice; at 6, the reference's own requirement, the same configurations scored 0.40, 0.43, 0.17, 0.17.
+6. **A simulator convergence bug** (a cell shuttled forever between two trapped stacks) was found by exhaustive validation and fixed.
+
+Current results are in the README.

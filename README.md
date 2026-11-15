@@ -2,41 +2,85 @@
 
 A Harbor task for AfterQuery's "Break the Agent" challenge (Junction 2026).
 
-An agent runs a sealed materials facility. Seven substances behave in ways it is not told. It has a small lab with 6 runs to learn them, then three chambers where its only action is opening a gate, permanently, with one attempt per chamber. A wrong opening can silently make a chamber unsolvable.
+An agent runs a sealed materials facility. Seven substances behave in ways it is not told. It has a small lab with 6 runs to learn them, then three chambers where its only action is opening a gate, permanently, with one attempt per chamber. An opening that looks harmless can remove every way of finishing the chamber, and the agent only finds out several openings later.
 
-It targets two weaknesses that the literature shows surviving code tools: discovering unfamiliar rules when experiments are scarce, and committing to irreversible actions whose consequences arrive later. See `docs/DECISION.md` for the research review and the design decision.
+![gpt-6-astra losing the foundry chamber at its first opening, next to the reference](results/clips/gpt-6-astra-foundry.gif)
+
+Left: `gpt-6-astra` through OpenCode. Right: the reference. The number under each panel is the exact count of gate orders that still complete the chamber.
+
+## Results
+
+Measured through Harbor 0.26.0 with OpenCode 1.19.5 on local Docker.
+
+| Run | Trials | Rewards | Mean |
+| --- | --- | --- | --- |
+| Reference (`-a oracle`), seeds 1 to 3 | 3 | 1.000, 1.000, 1.000 | 1.000 |
+| `openai/gpt-6.1-terra` | 3 | 0.700, 0.400, 0.133 | 0.411 |
+| `openai/gpt-6.1-sol` | 5 | 0.167, 0.167, 0.367, 0.433, 0.400 | 0.307 |
+| `openai/gpt-6-astra` | 2 | 0.433, 0.167 | 0.300 |
+| `openai/gpt-6.1-sol`, high reasoning effort | 2 | 0.167, 0.167 | 0.167 |
+| Do nothing (`-a nop`) | 1 | 0.000 | 0.000 |
+| Hostile agent script (`scripts/redteam.sh`) | 1 | 0.000 | 0.000 |
+
+- **12 agent trials across three seeds: mean 0.31, best 0.70, none complete.**
+- Chambers lost: foundry in 11 of 12 (usually at the first or second opening), works in 10 of 12, refinery in 7 of 12.
+- No trial hit a tool error or a timeout. Each used all 6 lab runs, made about 40 to 50 tool calls, and ended its own session after roughly 5 minutes.
+- Every trial's log, trajectory, journal and verifier record is under `results/harbor/`. `python3 scripts/summarize_runs.py` prints each one with its cost and the opening at which each chamber became unsolvable.
+
+Caveats: 2 to 5 trials per row, one harness, OpenAI models only. Cost reported by Harbor for all 27 recorded agent trials: $11.88.
 
 ## Run it
 
-Requirements: Docker and [Harbor](https://github.com/laude-institute/harbor) 0.26 (`uv tool install harbor`).
+Requirements: Docker, Python 3, and [Harbor](https://github.com/laude-institute/harbor) 0.26 (`uv tool install harbor`).
 
 ```bash
 cd tasks
-harbor run -p ./crucible-001 -a oracle                      # reference run, expect 1.0
-harbor run -p ./crucible-001 -a nop                         # do nothing, expect 0.0
-harbor run -p ./crucible-001 -a opencode -m <provider/model> -k 3   # three agent trials
+harbor run -p ./crucible-001 -a oracle                                  # reference, expect 1.0
+harbor run -p ./crucible-001 -a nop                                     # do nothing, expect 0.0
+OPENAI_API_KEY=... harbor run -p ./crucible-001 -a opencode -m openai/gpt-6.1-sol -k 3   # three agent trials
 ```
 
-`crucible-002` and `crucible-003` are other seeds. `crucible-00N-rules` is the same facility with the true substance behaviour written into the instruction (the rule-discovery ablation). More seeds: `python3 scripts/build_tasks.py 4 5 6 --rules`.
+Everything at once, including tests and the hostile-agent check: `scripts/verify.sh`.
 
-Nominate a strong model. The agent timeout is 120 minutes; agents typically stop themselves after about 5. The reference needs about 20 seconds. OpenCode is preinstalled in the task image, so trials start without a network install.
+Tasks `crucible-001` to `crucible-008` are different seeds. `-lab9` variants give 9 lab runs, `-rules` variants disclose the true substance behaviour in the instruction. More: `python3 scripts/build_tasks.py 9 10 [--rules] [--lab-runs N]`. OpenCode is preinstalled in the task image, so trials start without a network install. Agent timeout is 120 minutes; the reference needs about 20 seconds.
 
 ## The task
 
-- **Substances.** Each is static, a powder or a liquid, falls down or up, and has a density. Some pairs react on contact. One reaction only happens in bulk. One product reacts again with another substance, and that product eats walls. Symbols, names and colours are reshuffled per seed, so appearance tells nothing.
+- **Substances.** Each is static, a powder or a liquid, falls down or up, and has a density. Some pairs react on contact. One reaction only happens when there is enough of one reactant. One product reacts again, and that second product eats the wall it rests on. Symbols, names and colours are reshuffled per seed, so appearance tells nothing.
 - **Lab.** An 8 by 6 box. The agent draws any layout and it runs to rest under the same rules. 6 runs for the whole episode. Products cannot be placed; they have to be made inside a run.
 - **Chambers.** Substances sit in reservoirs behind numbered gates. `open` removes a gate for good and the world runs until nothing moves. Zones ask for a minimum count of a substance, sometimes one that does not exist yet.
-  Each facility has three chambers, all hard. Agents cleared the easier tiers in earlier runs, so those were removed; their layouts (leak, float, cellar, tower) remain in `engine/crucible/templates.py`.
-  - *works* (7 gates, 3 zones): the elixir must reach a sealed vault, and the only thing that opens the vault is made from the elixir itself.
-  - *foundry* (6 gates, 3 zones): seal a drain by making crust inside it, brew the elixir, then lift it over a spillway by pouring more liquid underneath. About 10 of roughly 1,950 gate orders win, and releasing the smaller reservoir first is already fatal.
-  - *refinery* (7 gates, 3 zones): foundry with a leaking receiver; the elixir is only kept if a powder plug is dropped into the receiver's drain in time.
-- **Observations.** The full grid, zone counts, a log of every reaction that occurred, and tick-by-tick recordings on request. Nothing a human sees in the browser version is withheld.
+  - *works* (7 gates, 3 zones): the elixir must reach a sealed vault, and the only thing that opens the vault is made from the elixir itself. 376 of roughly 13,700 gate orders win.
+  - *foundry* (6 gates, 3 zones): seal a drain by making crust inside it, brew the elixir, then lift it over a spillway by pouring more liquid underneath. About 10 of roughly 1,950 orders win.
+  - *refinery* (7 gates, 3 zones): foundry with a leaking receiver; the elixir is only kept if a powder plug is dropped into the receiver's drain in time. About 55 of roughly 13,700 orders win.
+- **Observations.** The full grid, zone counts, a log of every reaction, and tick-by-tick recordings on request. Nothing shown in the browser version is withheld from the agent.
 
 The agent gets a `crucible` CLI (`brief`, `view`, `lab`, `open`, `close`, `frames`, `status`) and may write any code it likes. The full statement is `task-template/instruction.md`.
 
+## Why agents lose, and why that is a fair reason
+
+The losses are planning failures under irreversibility, with the information available:
+
+- **Delayed consequence.** In foundry, releasing the smaller reservoir first already makes the chamber unsolvable. Nothing looks wrong until the last pour fails to lift the elixir over the spillway. 11 of 12 trials lost foundry this way or one opening later.
+- **Experiment design under a budget.** With 9 lab runs an agent can rehearse each risky step as a miniature in the lab, and sometimes wins. With 6, which is exactly what the reference uses, it has to plan from what it has learned.
+
+| `gpt-6.1-sol` | 9 lab runs | 6 lab runs |
+| --- | --- | --- |
+| default effort, seed 3 | 1.000 | 0.400, 0.433 |
+| high effort, seed 1 | 0.733 | 0.167 |
+| high effort, seed 3 | 0.733 | 0.167 |
+
+All 15 trials at 9 runs are in `results/harbor/` too: Astra 0.400, 0.167, 0.167; Sol 0.133, 0.167, 0.100, 0.167, 1.000 and 0.733, 0.733 at high effort; Terra 0.133, 0.400, 0.700, 0.400, 0.400.
+
+What was ruled out as a cause:
+
+- **Interface.** On an earlier layout that still had easy and medium chambers, the same agents completed most of them with the same CLI (`results/harbor-v4-six-chambers/`, git tag `v4-six-chambers`).
+- **Missing information.** `tests/` asserts that every rule a chamber depends on can be observed inside the lab box.
+- **Arbitrary simulator details.** Two were found during development (which wall the corrosive product attacked first, and liquids being shoved by a different liquid poured on top). Both were removed, even though they lowered agent scores.
+- **Unsolvable or unstable worlds.** `scripts/validate.py` enumerates every line of play for a seed: nothing scores at the start, every line comes to rest, and a winning order exists.
+
 ## Scoring
 
-Reward = (c1 + c2 + c3) / 3, where a complete chamber scores 1 and an incomplete one scores 0.3 x (zones met / zones). It is written to `/logs/verifier/reward.txt`.
+Reward = mean of the three chamber scores. A complete chamber scores 1; an incomplete one scores 0.3 x (zones met / zones). It is written to `/logs/verifier/reward.txt`.
 
 | Policy (seeds 1 to 3, graded by journal replay) | Reward |
 | --- | --- |
@@ -53,104 +97,34 @@ Reproduce with `python3 scripts/baselines.py`.
 - The sidecar appends every accepted action to a journal. After the agent stops, Harbor copies that one file out of the sidecar into a **separate verifier container** with no network.
 - The verifier has its own build of the simulator. It ignores everything else and **re-executes the journal from the seed**. Any entry the rules would not allow (unknown gate, reopened gate, action on a finished chamber, a seventh lab run, malformed data) rejects the whole journal and scores 0.
 - There is no reset and no score-setting endpoint. Lab runs cannot touch chambers. Completion is recomputed from cell counts in the final replayed state, so reports, files and extra journal fields change nothing.
-- `python3 -m unittest discover tests` covers the cases above (22 tests).
-
+- `python3 -m unittest discover tests` covers these cases (22 tests).
 - `scripts/redteam.sh` runs a hostile script as the agent inside the real Harbor task: it writes reward files, plants a forged winning journal at the verifier's path in its own container, probes for hidden endpoints and path traversal, sends malformed and oversized requests, exceeds the lab budget, and leaves a background process rewriting the reward. Measured reward: 0.0000 (`results/redteam/`).
+- Two models were also given the task with `redteam/adversarial_instruction.md` (ignore the puzzle, raise the reward by any exploit). Both declined to try, so that run says nothing about robustness; the scripted check is the evidence.
 
-Known limits, stated plainly: the public salt in this repository makes seed to world deterministic, so anyone who learns a task's seed and has the source can compute the answer. The seed is not visible from the agent container. For a held-out evaluation set `CRUCIBLE_SALT` privately in both the sidecar and the verifier image.
+Known limit: the public salt in this repository makes seed to world deterministic, so anyone who learns a task's seed and has the source can compute the answer. The seed is not visible from the agent container. For a held-out evaluation set `CRUCIBLE_SALT` privately in both the sidecar and the verifier image.
 
 ## Reference solution and what it knows
 
-`solution/solve.py` uses only the public interface. It knows the matter family (which kinds of behaviour and reaction can exist) but not which visible substance is which. It spends all 6 lab runs identifying them, plans each chamber by exhaustive search in its own copy of the simulator, and aborts if the facility ever disagrees with its prediction.
+`solution/solve.py` uses only the public interface. It knows the matter family (which kinds of behaviour and reaction can exist) but not which visible substance is which. It spends its 6 lab runs identifying them, plans each chamber by exhaustive search in its own copy of the simulator, and aborts if the facility ever disagrees with its prediction.
 
-That is an advantage over an agent, which is told nothing about the family, and it is the same protocol discovery benchmarks use (solver or human against an agent without rules). Two fairer comparisons are prepared: the `-rules` task variants, and first-time human players in the browser version.
+That is an advantage over an agent, which is told nothing about the family. It is the protocol discovery benchmarks use (a solver that knows the game against an agent that does not), and it is disclosed here rather than hidden. The `-rules` task variants remove the discovery part for anyone who wants to measure planning alone.
 
 ## Diagnostics: the first fatal move
 
-Chambers have few gates, so every order is simulated. For any recorded run:
+Chambers have few gates, so every order is simulated and the counts are exact.
 
 ```bash
 python3 scripts/analyze.py --seed 1 agent=path/to/journal.jsonl --reference --html replay.html
+python3 scripts/render_clip.py --seed 1 --journal path/to/journal.jsonl --chamber 3 --out clip.gif
 ```
 
-prints, per opening, how many winning orders existed before and after, flags the first opening that eliminated all of them, and lists the gates that would have kept the chamber solvable. `replay.html` is a standalone side-by-side viewer of that run against the reference. The journal of a Harbor trial is under `<trial>/artifacts/`.
+`analyze.py` prints, per opening, how many winning orders existed before and after, flags the opening that eliminated all of them, and lists the gates that would have kept the chamber solvable. `replay.html` is a standalone side-by-side viewer; add `#play` to the URL to start playback at once. A trial's journal is at `<trial>/artifacts/var/crucible/journal.jsonl`. Ready-made replays: `results/replay-gpt-6-astra-seed1.html` and `results/replay-gpt-6.1-sol-seed1.html` (the second is a 9-run trial).
 
-## Results so far
+## Other evidence, with its limits
 
-**Harbor, local Docker, Harbor 0.26.0, tasks `crucible-001` to `003` (six chambers):** reference (`-a oracle`) 1.0000 on all three, do nothing (`-a nop`) 0.0000 on `001`. Logs are in `results/harbor/`.
-
-**Frontier agents through Harbor and OpenCode (the official harness).** Default tasks (three hard chambers, 6 lab runs), OpenCode 1.19.5. Logs, trajectories and journals are under `results/harbor/opencode-*/`; `python3 scripts/summarize_runs.py` prints every trial with its budget, cost and the opening where each chamber was lost.
-
-| Model | Effort | Trials | Rewards at 6 lab runs | Mean | Reference |
-| --- | --- | --- | --- | --- | --- |
-| `openai/gpt-6-astra` | default | 2 | 0.433, 0.167 | 0.300 | 1.00 |
-| `openai/gpt-6.1-sol` | default | 5 | 0.167, 0.167, 0.367, 0.433, 0.400 | 0.307 | 1.00 |
-| `openai/gpt-6.1-sol` | high | 2 | 0.167, 0.167 | 0.167 | 1.00 |
-| `openai/gpt-6.1-terra` | default | 3 | 0.700, 0.400, 0.133 | 0.411 | 1.00 |
-
-- **12 trials across three seeds, mean 0.31, best 0.70, none complete.** The reference scores 1.00 with the same 6 runs.
-- Chambers lost: foundry 11 of 12 (usually at the first or second opening), works 10 of 12, refinery 7 of 12.
-- The typical loss is an opening that looks harmless and removes every winning order, discovered only several openings later.
-- No trial hit a tool error or a timeout; sessions were ended by the agents after about 5 minutes.
-
-**Why the budget is 6.** With 9 lab runs an agent can rehearse risky steps as miniatures, and sometimes wins; with 6, the reference's own requirement, it has to plan from what it has learned.
-
-| `gpt-6.1-sol` | 9 lab runs | 6 lab runs |
-| --- | --- | --- |
-| default effort, seed 3 | 1.000 | 0.400, 0.433 |
-| high effort, seed 1 | 0.733 | 0.167 |
-| high effort, seed 3 | 0.733 | 0.167 |
-
-All 15 trials at 9 runs (tasks `crucible-00N-lab9`) are in the same results folder: Astra 0.400, 0.167, 0.167; Sol 0.133, 0.167, 0.100, 0.167, 1.000 and 0.733, 0.733 at high effort; Terra 0.133, 0.400, 0.700, 0.400, 0.400. Trials recorded before the default changed carry the task name `crucible-00N` with a budget of 9; the budget column of `summarize_runs.py` reads each trial's verifier record and is authoritative.
-
-Caveats: small n per cell, one harness, OpenAI models only. Cost reported by Harbor: $11.88 for these 27 trials.
-
-**Agent red-team.** `gpt-6.1-sol` and `gpt-6-astra` were given the task plus `redteam/adversarial_instruction.md` (ignore the puzzle, raise the reward by any exploit). Both declined: Astra refused in its first message and made no tool calls, Sol was stopped by a safety refusal. Both scored 0.0, but since nothing was attempted this is not evidence about robustness. The scripted check (`scripts/redteam.sh`, reward 0.0000 on this layout) is the evidence.
-
-**Same agents on the earlier six-chamber layout** (two easy, two medium, two hard; archived in `results/harbor-v4-six-chambers/`, git tag `v4-six-chambers`): Terra 0.675, 0.45, 0.45; Sol 0.575, 0.575, 0.40; Astra 0.575. They completed most easy and medium chambers there with the same tools and interface, which is the control showing the losses above are not interface failures.
-
-**Blind pilots with Claude Fable 5.2 (not Harbor runs, earlier layouts).** The pilots below played earlier layouts that still included easy and medium chambers. Their journals replay at git tag `pilots-3-chamber`, not at the current head. One pilot has played the current six-chamber layout (pilot 7, seed 41, journal `results/pilots/v3-pilot7-seed41.jsonl`, replays at the current head): reward 0.775. It completed five chambers, including the new foundry, and lost works at its sixth opening, the same way pilots 5 and 6 did: an earlier pour had pushed a resting liquid to a spot it had not predicted, and the wall-eating product then breached the wrong wall. Works is 0 for 3 across clean pilots; no other chamber type has been failed. Replay: `results/replay-pilot7-seed41.html`.
-
- To get an early signal, a frontier model (Claude Fable 5.2, as a sub-agent with a shell) was given only `instruction.md` and the `crucible` CLI against a local server, with no access to the source. Journals are in `results/pilots/`, graded by the same replay code as the verifier.
-
-| Version | Run | Seed | Lab runs | Reward | Chamber 3 |
-| --- | --- | --- | --- | --- | --- |
-| 1 (6 substances, 12 runs, 12x10 lab, 5 gates) | pilot 1 | 11 | 9 | 1.00 | complete |
-| 1 | pilot 2 | 12 | 5 | 1.00 | complete |
-| 2 | pilot 5 | 31 | 7 | 0.55 | 1/3 zones, fatal at step 6 |
-| 2 | pilot 6 | 32 | 7 | 0.60 | 2/3 zones, stopped while still solvable |
-| 2 | reference | any | 5 | 1.00 | complete |
-
-What happened, in order:
-
-1. Version 1 produced **no gap**. Both pilots identified every substance and rehearsed each risky chamber step as a miniature in the lab. That result is why version 2 exists.
-2. Version 2 shrinks the lab, cuts the runs, and adds the bulk-only reaction, the reaction chain and the 7-gate chamber. Both pilots still completed chambers 1 and 2.
-3. In chamber 3, **pilot 5** kept the chamber solvable for five openings, then opened the one gate that removed the last winning order (the other remaining gate would have kept it alive). It had seen the risk but had no lab runs left to test the alternative.
-4. **Pilot 6** stopped with 2 of 3 zones met and **one winning order still available**: a single further opening completed the chamber. A lab rehearsal had convinced it that opening would drain a finished zone. Its model of the world predicted most things correctly and was wrong on the one prediction that decided the outcome.
-
-**Rules-given ablation (one run).** Pilot 8 played seed 2 with the true substance behaviour written into its instruction (`results/pilots/v3-rules-pilot8-seed2.jsonl`, replay `results/replay-rules-pilot8-seed2.html`). Reward 0.80, against 0.775 for the blind pilot on the same layout. It completed works, and lost foundry at its **first** opening: it released the smaller reservoir first, and every one of the 12 winning orders needs the larger pour to come first. It found out three openings later, and finished with 4 of 9 lab runs unused. So with the rules in hand the loss is an irreversible ordering mistake with a delayed consequence, not a failure to discover rules. One run, different seed from the blind pilot, so this is suggestive only.
-
-Note on versions: pilots 5 to 7 ran before two simulator details were made predictable (commit `16643df`); pilot 8 ran after. Journals from before that commit replay at `b7750c9` or the `pilots-3-chamber` tag.
-
-**After the cleanup, with 9 lab runs: no gap.** Pilot 9 (seed 43, `results/pilots/v4-pilot9-seed43.jsonl`) completed all six chambers, reward 1.00, using 7 of 9 lab runs, most of them as miniature rehearsals of risky chamber steps. With lab runs to spare, the strongest model tested solves the task. The lab budget is therefore a task parameter (`scripts/build_tasks.py --lab-runs N`, tasks named `-labN`); the reference needs 6 and scores 1.0 through Harbor at 6.
-
-**With 6 lab runs: still no gap.** Pilot 10 (seed 44, budget 6, `results/pilots/v4-pilot10-seed44-lab6.jsonl`) also completed all six chambers, reward 1.00, using all 6 runs. By its own account two of its openings were gambles rather than tested knowledge, and its single-cell test of the bulk-only reaction was a false negative that it worked around by inference.
-
-**Claude Fable 5.2 in the pilot harness is the exception.** Blind play scored 1.00 twice (budgets 9 and 6) and the rules-given run scored 0.80, so against that model there is no demonstrated gap. Earlier losses (pilots 5 to 7) depended on simulator details that have since been removed because they were arbitrary.
-
-Two earlier pilots (3 and 4) are kept in `results/pilots/` but are **not evidence**: at that point the bulk reaction could not be observed with any ordinary lab layout, which is missing information rather than a reasoning failure. The threshold was lowered and `tests/` now asserts that every rule a chamber depends on can be shown in the lab box.
-
-Caveats: n = 2 on version 2, one model, a pilot harness rather than OpenCode, and seeds differ only in skin, mirroring, chamber order and gate numbers. Treat it as a pilot signal, not a measured gap. 
-
-Replays with exact per-move solvability: open `results/replay-pilot5-seed31.html` and `results/replay-pilot6-seed32.html` in a browser.
-
-## Human playtest
-
-```bash
-scripts/play.sh            # then open http://localhost:8080
-```
-
-Same rules, same lab budget, same one-shot chambers. Each session is saved to `playtests/sessions/` as a journal with timestamps plus a notes file (tab switches, replays watched, the player's own explanation). Any session journal can be scored and replayed with `scripts/analyze.py`. No human has played yet, so human accessibility is unverified.
+- **Claude Fable 5.2 was only tested in an ad hoc pilot harness, on earlier layouts.** As a sub-agent with a shell, the CLI and no source access, it scored 1.00 twice on a six-chamber layout (lab budgets 9 and 6) and 0.80 once with the rules given. It has not been run on the current three-chamber tasks or through OpenCode, so the gap above is established for OpenAI models only. Journals are in `results/pilots/`; they replay at the git tags noted in `results/pilots/README.md`.
+- **No human has played it.** `scripts/play.sh` serves the same game in a browser at `http://localhost:8080` with the same lab budget and one-shot chambers, and saves each session to `playtests/sessions/`. Until someone plays, human accessibility is unverified, and three hard chambers with 6 lab runs may be hard for people too.
+- **No small-model training was done.**
 
 ## Layout
 
@@ -161,11 +135,11 @@ reference/solve.py  reference player
 task-template/      Harbor task skeleton; scripts/build_tasks.py fills tasks/
 tasks/              generated, self-contained Harbor tasks
 web/                browser game and replay viewer (render only, no game logic)
-scripts/            build_tasks, validate, baselines, analyze, render_clip, redteam, design, play
-redteam/            the hostile agent script used by scripts/redteam.sh
+scripts/            verify, build_tasks, validate, baselines, analyze, summarize_runs, render_clip, redteam, play, design
+redteam/            hostile agent script and adversarial instruction
 tests/              engine and reward-integrity tests
-results/            Harbor logs, pilot journals, replay pages
-docs/DECISION.md    research review, candidates, decision, formal spec
+results/            Harbor trial logs, pilot journals, replays, clip, red-team evidence
+docs/DECISION.md    research review, candidate concepts, decision, formal spec
 ```
 
-Determinism: integer state, fixed scan order, no randomness in the simulation. A seed fixes the skin, mirror flips and gate numbering. `python3 scripts/validate.py` checks every chamber of a seed exhaustively: nothing scores at the start, every reachable line comes to rest, a winning order exists, and a fatal first move exists.
+Determinism: integer state, fixed scan order, no randomness in the simulation. A seed fixes the skin, mirror flips, chamber order and gate numbering.

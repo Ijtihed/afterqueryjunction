@@ -1,0 +1,25 @@
+timestamp=2026-11-15T01:29:35.268Z level=INFO run=5179acfd message="creating instance" directory=/app
+timestamp=2026-11-15T01:29:35.269Z level=INFO run=5179acfd message=fromDirectory directory=/app
+timestamp=2026-11-15T01:29:35.276Z level=INFO run=5179acfd message=bootstrapping directory=/app
+timestamp=2026-11-15T01:29:35.279Z level=INFO run=5179acfd message=loading path=/root/.config/opencode/config.json
+timestamp=2026-11-15T01:29:35.279Z level=INFO run=5179acfd message=loading path=/root/.config/opencode/opencode.json
+timestamp=2026-11-15T01:29:35.282Z level=INFO run=5179acfd message=loading path=/root/.config/opencode/opencode.jsonc
+timestamp=2026-11-15T01:29:35.374Z level=INFO run=5179acfd message="all LSPs are disabled"
+timestamp=2026-11-15T01:29:35.375Z level=INFO run=5179acfd message="all formatters are disabled"
+timestamp=2026-11-15T01:29:35.375Z level=INFO run=5179acfd message=init
+timestamp=2026-11-15T01:29:35.475Z level=INFO run=5179acfd message=created id=ses_e232d0a0cffep95vHiNxO3WPW6 slug=silent-wolf version=1.19.5 projectID=global directory=/app path=app workspaceID=undefined parentID=undefined title="New session - 2026-11-15T01:29:35.475Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1794706175475 time.updated=1794706175475
+timestamp=2026-11-15T01:29:35.480Z level=INFO run=5179acfd message="event connected"
+timestamp=2026-11-15T01:29:35.503Z level=INFO run=5179acfd message=loop session.id=ses_e232d0a0cffep95vHiNxO3WPW6 step=0
+timestamp=2026-11-15T01:29:35.899Z level=INFO run=5179acfd message=stream providerID=openai modelID=gpt-5.4-nano-flex session.id=ses_e232d0a0cffep95vHiNxO3WPW6 small=true agent=title mode=primary
+timestamp=2026-11-15T01:29:35.903Z level=INFO run=5179acfd message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-5.4-nano-flex
+timestamp=2026-11-15T01:29:35.942Z level=INFO run=5179acfd message=initialized
+timestamp=2026-11-15T01:29:35.949Z level=INFO run=5179acfd message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:29:35.952Z level=INFO run=5179acfd message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-11-15T01:29:35.956Z level=INFO run=5179acfd message=init count=1
+timestamp=2026-11-15T01:29:35.976Z level=INFO run=5179acfd message="watcher backend" directory=/app platform=linux backend=inotify
+timestamp=2026-11-15T01:29:35.980Z level=INFO run=5179acfd message="project copy refresh started" projectID=global
+timestamp=2026-11-15T01:29:35.981Z level=INFO run=5179acfd message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-11-15T01:29:35.991Z level=INFO run=5179acfd message="booting location services" directory=/app workspaceID=undefined
+timestamp=2026-11-15T01:29:36.128Z level=INFO run=5179acfd message=process session.id=ses_e232d0a0cffep95vHiNxO3WPW6 messageID=msg_1dcd2f798001KGGGpMcBHTEbZd
+timestamp=2026-11-15T01:29:36.129Z level=INFO run=5179acfd message=stream providerID=openai modelID=gpt-6-astra session.id=ses_e232d0a0cffep95vHiNxO3WPW6 small=false agent=build mode=primary
+timestamp=2026-11-15T01:29:36.130Z level=INFO run=5179acfd message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6-astra

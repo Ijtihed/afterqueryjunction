@@ -1,0 +1,11 @@
+Skipping image OS validation for hb__b72b88feb3044e319b0149a38a9737aa: docker inspect returned 1
+OpenCode is already available at the requested version
+Running command: mkdir -p ~/.config/opencode && echo '{
+  "provider": {
+    "openai": {
+      "models": {
+        "gpt-6.1-sol": {}
+      }
+    }
+  }
+}' > ~/.config/opencode/opencode.json

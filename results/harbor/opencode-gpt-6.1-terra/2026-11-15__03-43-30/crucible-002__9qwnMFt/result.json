@@ -1,0 +1,134 @@
+{
+    "schema_version": 1,
+    "id": "93b2a1a1-32e6-4910-9ace-ac9af5649cdf",
+    "task_name": "crucible/crucible-002",
+    "trial_name": "crucible-002__9qwnMFt",
+    "trial_uri": "file:///home/ijtihed/crucible/results/harbor/opencode-gpt-6.1-terra/2026-11-15__03-43-30/crucible-002__9qwnMFt",
+    "task_id": {
+        "path": "crucible-002"
+    },
+    "source": null,
+    "task_checksum": "dde525c37a302cc44aa6d35a42ed3eb234ce31f947c8cc3c4d6b40bfc99dfa16",
+    "config": {
+        "schema_version": 1,
+        "task": {
+            "path": "crucible-002",
+            "git_url": null,
+            "git_commit_id": null,
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": null
+        },
+        "trial_name": "crucible-002__9qwnMFt",
+        "trials_dir": "../results/harbor/opencode-gpt-6.1-terra/2026-11-15__03-43-30",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": "opencode",
+            "import_path": null,
+            "model_name": "openai/gpt-6.1-terra",
+            "base_url": null,
+            "model_api_key_name": null,
+            "model_api_format": null,
+            "skip_model_parsing": false,
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "resume_trajectory": false,
+            "load_trajectory": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {},
+            "mcp_servers": []
+        },
+        "user_agent": null,
+        "environment": {
+            "type": "docker",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "stream": false,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {},
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "override_error_policy": {},
+        "artifacts": [],
+        "extra_instruction_paths": [],
+        "extra_instructions": [],
+        "job_id": "e08dd453-c6ae-4399-aef1-3f930da37579",
+        "source_trial": null
+    },
+    "agent_info": {
+        "name": "opencode",
+        "version": "1.19.5",
+        "model_info": {
+            "name": "gpt-6.1-terra",
+            "provider": "openai"
+        }
+    },
+    "agent_result": {
+        "n_input_tokens": 564856,
+        "n_cache_tokens": 564757,
+        "n_output_tokens": 1534,
+        "cost_usd": 0.11013184999999999,
+        "model_usage": {
+            "openai/gpt-6.1-terra": {
+                "n_input_tokens": 564856,
+                "n_cache_tokens": 564757,
+                "n_output_tokens": 1534,
+                "cost_usd": 0.11013184999999999
+            }
+        },
+        "rollout_details": null,
+        "metadata": null
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 0.4
+        }
+    },
+    "verifier_environment_mode": "separate",
+    "exception_info": null,
+    "started_at": "2026-11-15T01:43:31.377094Z",
+    "finished_at": "2026-11-15T01:46:59.716196Z",
+    "environment_setup": {
+        "started_at": "2026-11-15T01:43:31.386532Z",
+        "finished_at": "2026-11-15T01:43:40.056529Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-11-15T01:43:40.056577Z",
+        "finished_at": "2026-11-15T01:43:40.815940Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-11-15T01:43:40.816274Z",
+        "finished_at": "2026-11-15T01:46:19.985536Z"
+    },
+    "verifier": {
+        "started_at": "2026-11-15T01:46:41.520771Z",
+        "finished_at": "2026-11-15T01:46:59.716175Z"
+    },
+    "step_results": null,
+    "reward_valid": true
+}

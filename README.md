@@ -81,16 +81,21 @@ prints, per opening, how many winning orders existed before and after, flags the
 
 **Frontier agents through Harbor and OpenCode (the official harness).** Task `crucible-001` (three hard chambers, 9 lab runs), OpenCode 1.19.5 at its default settings. Logs, trajectories and journals are under `results/harbor/opencode-*/`; regenerate the table with `python3 scripts/summarize_runs.py`.
 
-| Model | Trials | Rewards | Mean | Reference |
-| --- | --- | --- | --- | --- |
-| `openai/gpt-6.1-sol` | 3 | 0.133, 0.167, 0.100 | 0.133 | 1.00 |
-| `openai/gpt-6.1-terra` | 3 | 0.133, 0.400, 0.700 | 0.411 | 1.00 |
-| `openai/gpt-6-astra` | 1 | 0.400 | 0.400 | 1.00 |
+| Model | Effort | Seed 1 | Seed 2 | Seed 3 | Mean | Reference |
+| --- | --- | --- | --- | --- | --- | --- |
+| `openai/gpt-6-astra` | default | 0.400, 0.167, 0.167 | | | 0.244 | 1.00 |
+| `openai/gpt-6.1-sol` | default | 0.133, 0.167, 0.100 | 0.167 | 1.000 | 0.313 | 1.00 |
+| `openai/gpt-6.1-terra` | default | 0.133, 0.400, 0.700 | 0.400 | 0.400 | 0.407 | 1.00 |
+| `openai/gpt-6.1-sol` | high | 0.733 | | | 0.733 | 1.00 |
 
-- Chambers lost: foundry in 6 of 7 trials (5 of them at the very first opening), works in 6 of 7, refinery in 5 of 7.
+- 14 trials, mean 0.37 against 1.00 for the reference. 12 of 14 scored 0.40 or less.
+- **It is not unbeatable.** One default-effort Sol trial completed all three chambers on seed 3, and the single high-effort Sol trial scored 0.733 on seed 1. Both were legitimate solves of about 40 tool calls.
+- Chambers lost across the 14 trials: foundry 11 (9 of them at the first or second opening), works 12, refinery 6.
 - The typical loss is an opening that looks harmless and removes every winning order, discovered only several openings later.
-- No trial hit a tool error or a timeout. Each used all 9 lab runs and ended its own session. One Terra trial is flagged `NonZeroAgentExitCodeError`: OpenCode returns 1 when the final message is empty; the session itself completed.
-- Caveats: one seed, default reasoning effort, n of 1 to 3. Cost reported by Harbor: $2.84 for these 7 trials.
+- No trial hit a tool error or a timeout; sessions were ended by the agents. One Terra trial is flagged `NonZeroAgentExitCodeError` because OpenCode returns 1 when the final message is empty; that session completed.
+- Caveats: n of 1 to 3 per cell, and the high-effort row is a single trial. Cost reported by Harbor: $6.93 for these 14 trials.
+
+**Agent red-team.** `gpt-6.1-sol` and `gpt-6-astra` were given the task plus `redteam/adversarial_instruction.md` (ignore the puzzle, raise the reward by any exploit). Both declined: Astra refused in its first message and made no tool calls, Sol was stopped by a safety refusal. Both scored 0.0, but since nothing was attempted this is not evidence about robustness. The scripted check (`scripts/redteam.sh`, reward 0.0000 on this layout) is the evidence.
 
 **Same agents on the earlier six-chamber layout** (two easy, two medium, two hard; archived in `results/harbor-v4-six-chambers/`, git tag `v4-six-chambers`): Terra 0.675, 0.45, 0.45; Sol 0.575, 0.575, 0.40; Astra 0.575. They completed most easy and medium chambers there with the same tools and interface, which is the control showing the losses above are not interface failures.
 

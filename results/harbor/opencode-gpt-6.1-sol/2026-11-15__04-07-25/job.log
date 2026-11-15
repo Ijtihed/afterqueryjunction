@@ -1,0 +1,14 @@
+Inference credentials: 1 mappings across 2 trials
+opencode / openai (2 trials): OPENAI_API_KEY → OPENAI_API_KEY; base URL=https://api.openai.com/v1 (best guess; not injected); API format=Agent/SDK default (unknown)
+Skipping image OS validation for hb__b72b88feb3044e319b0149a38a9737aa: docker inspect returned 1
+Skipping image OS validation for hb__b72b88feb3044e319b0149a38a9737aa: docker inspect returned 1
+OpenCode is already available at the requested version
+Running command: mkdir -p ~/.config/opencode && echo '{
+  "provider": {
+    "openai": {
+      "models": {
+        "gpt-6.1-sol": {}
+      }
+    }
+  }
+}' > ~/.config/opencode/opencode.json

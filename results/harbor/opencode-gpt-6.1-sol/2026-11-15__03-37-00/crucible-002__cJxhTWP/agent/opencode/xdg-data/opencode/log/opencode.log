@@ -1,0 +1,311 @@
+timestamp=2026-11-15T01:37:12.192Z level=INFO run=4f67b104 message="creating instance" directory=/app
+timestamp=2026-11-15T01:37:12.194Z level=INFO run=4f67b104 message=fromDirectory directory=/app
+timestamp=2026-11-15T01:37:12.201Z level=INFO run=4f67b104 message=bootstrapping directory=/app
+timestamp=2026-11-15T01:37:12.204Z level=INFO run=4f67b104 message=loading path=/root/.config/opencode/config.json
+timestamp=2026-11-15T01:37:12.204Z level=INFO run=4f67b104 message=loading path=/root/.config/opencode/opencode.json
+timestamp=2026-11-15T01:37:12.207Z level=INFO run=4f67b104 message=loading path=/root/.config/opencode/opencode.jsonc
+timestamp=2026-11-15T01:37:12.307Z level=INFO run=4f67b104 message="all LSPs are disabled"
+timestamp=2026-11-15T01:37:12.307Z level=INFO run=4f67b104 message="all formatters are disabled"
+timestamp=2026-11-15T01:37:12.307Z level=INFO run=4f67b104 message=init
+timestamp=2026-11-15T01:37:12.414Z level=INFO run=4f67b104 message=created id=ses_e23261121ffeaLQ2uMiJD2XFBH slug=quick-squid version=1.19.5 projectID=global directory=/app path=app workspaceID=undefined parentID=undefined title="New session - 2026-11-15T01:37:12.414Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1794706632414 time.updated=1794706632414
+timestamp=2026-11-15T01:37:12.419Z level=INFO run=4f67b104 message="event connected"
+timestamp=2026-11-15T01:37:12.440Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=0
+timestamp=2026-11-15T01:37:12.876Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-5.4-nano-flex session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=true agent=title mode=primary
+timestamp=2026-11-15T01:37:12.880Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-5.4-nano-flex
+timestamp=2026-11-15T01:37:12.915Z level=INFO run=4f67b104 message=initialized
+timestamp=2026-11-15T01:37:12.933Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:12.937Z level=INFO run=4f67b104 message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-11-15T01:37:12.941Z level=INFO run=4f67b104 message=init count=1
+timestamp=2026-11-15T01:37:12.967Z level=INFO run=4f67b104 message="watcher backend" directory=/app platform=linux backend=inotify
+timestamp=2026-11-15T01:37:12.971Z level=INFO run=4f67b104 message="project copy refresh started" projectID=global
+timestamp=2026-11-15T01:37:12.972Z level=INFO run=4f67b104 message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-11-15T01:37:12.981Z level=INFO run=4f67b104 message="booting location services" directory=/app workspaceID=undefined
+timestamp=2026-11-15T01:37:13.053Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcd9f0a90013IMD5zvnxgQyUM
+timestamp=2026-11-15T01:37:13.053Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:37:13.117Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:37:15.956Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible brief" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:16.135Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:16.149Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=1
+timestamp=2026-11-15T01:37:16.211Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:16.215Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcd9fd77001FkzVgw1ijECzmf
+timestamp=2026-11-15T01:37:16.216Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:37:16.216Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:37:18.575Z level=INFO run=4f67b104 message=evaluated permission=todowrite pattern=* action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:18.596Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:18.607Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=2
+timestamp=2026-11-15T01:37:18.616Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:18.626Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcda07100010jsAEGsB7oHTYs
+timestamp=2026-11-15T01:37:18.626Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:37:18.627Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:37:21.989Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible view 1" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:21.993Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible view 2" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:21.997Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible view 3" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:22.193Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:22.263Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=3
+timestamp=2026-11-15T01:37:22.280Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:22.284Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcda15590013OdG2I2wJrRiFx
+timestamp=2026-11-15T01:37:22.285Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:37:22.286Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:37:30.120Z level=INFO run=4f67b104 message=evaluated permission=external_directory pattern=/tmp/opencode/* action.permission=external_directory action.pattern=/tmp/opencode/* action.action=allow
+timestamp=2026-11-15T01:37:30.121Z level=INFO run=4f67b104 message=evaluated permission=external_directory pattern=/tmp/opencode/* action.permission=external_directory action.pattern=/tmp/opencode/* action.action=allow
+timestamp=2026-11-15T01:37:30.121Z level=INFO run=4f67b104 message=evaluated permission=edit pattern=tmp/opencode/lab1.txt action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:30.121Z level=INFO run=4f67b104 message=evaluated permission=edit pattern=tmp/opencode/lab2.txt action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:30.123Z level=INFO run=4f67b104 message=formatting file=/tmp/opencode/lab1.txt
+timestamp=2026-11-15T01:37:30.123Z level=INFO run=4f67b104 message=formatting file=/tmp/opencode/lab2.txt
+timestamp=2026-11-15T01:37:30.123Z level=INFO run=4f67b104 message="touching file" file=/tmp/opencode/lab1.txt
+timestamp=2026-11-15T01:37:30.124Z level=INFO run=4f67b104 message="touching file" file=/tmp/opencode/lab2.txt
+timestamp=2026-11-15T01:37:30.149Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:30.162Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=4
+timestamp=2026-11-15T01:37:30.173Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:30.182Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcda3433001DPiqxif286wUE8
+timestamp=2026-11-15T01:37:30.182Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:37:30.184Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:37:32.718Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible lab /tmp/opencode/lab1.txt" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:32.766Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible lab /tmp/opencode/lab2.txt" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:32.855Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:32.894Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=5
+timestamp=2026-11-15T01:37:32.907Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:32.909Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcda3edf001JWnD6YZGjfxfqY
+timestamp=2026-11-15T01:37:32.909Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:37:32.910Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:37:39.464Z level=INFO run=4f67b104 message=evaluated permission=external_directory pattern=/tmp/opencode/* action.permission=external_directory action.pattern=/tmp/opencode/* action.action=allow
+timestamp=2026-11-15T01:37:39.465Z level=INFO run=4f67b104 message=evaluated permission=external_directory pattern=/tmp/opencode/* action.permission=external_directory action.pattern=/tmp/opencode/* action.action=allow
+timestamp=2026-11-15T01:37:39.465Z level=INFO run=4f67b104 message=evaluated permission=edit pattern=tmp/opencode/lab3.txt action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:39.465Z level=INFO run=4f67b104 message=evaluated permission=edit pattern=tmp/opencode/lab4.txt action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:39.467Z level=INFO run=4f67b104 message=formatting file=/tmp/opencode/lab3.txt
+timestamp=2026-11-15T01:37:39.468Z level=INFO run=4f67b104 message=formatting file=/tmp/opencode/lab4.txt
+timestamp=2026-11-15T01:37:39.468Z level=INFO run=4f67b104 message="touching file" file=/tmp/opencode/lab3.txt
+timestamp=2026-11-15T01:37:39.468Z level=INFO run=4f67b104 message="touching file" file=/tmp/opencode/lab4.txt
+timestamp=2026-11-15T01:37:39.507Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:39.524Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=6
+timestamp=2026-11-15T01:37:39.536Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:39.543Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcda58c5001NVMbw4S3Q7xt6D
+timestamp=2026-11-15T01:37:39.543Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:37:39.545Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:37:41.260Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible lab /tmp/opencode/lab3.txt" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:41.285Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible lab /tmp/opencode/lab4.txt" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:41.350Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:41.363Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=7
+timestamp=2026-11-15T01:37:41.373Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:41.376Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcda5ff4001SncSd5SrhI5fQ3
+timestamp=2026-11-15T01:37:41.376Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:37:41.377Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:37:52.928Z level=INFO run=4f67b104 message=evaluated permission=external_directory pattern=/tmp/opencode/* action.permission=external_directory action.pattern=/tmp/opencode/* action.action=allow
+timestamp=2026-11-15T01:37:52.928Z level=INFO run=4f67b104 message=evaluated permission=external_directory pattern=/tmp/opencode/* action.permission=external_directory action.pattern=/tmp/opencode/* action.action=allow
+timestamp=2026-11-15T01:37:52.928Z level=INFO run=4f67b104 message=evaluated permission=edit pattern=tmp/opencode/lab5.txt action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:52.928Z level=INFO run=4f67b104 message=evaluated permission=edit pattern=tmp/opencode/lab6.txt action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:52.930Z level=INFO run=4f67b104 message=formatting file=/tmp/opencode/lab5.txt
+timestamp=2026-11-15T01:37:52.931Z level=INFO run=4f67b104 message=formatting file=/tmp/opencode/lab6.txt
+timestamp=2026-11-15T01:37:52.931Z level=INFO run=4f67b104 message="touching file" file=/tmp/opencode/lab5.txt
+timestamp=2026-11-15T01:37:52.931Z level=INFO run=4f67b104 message="touching file" file=/tmp/opencode/lab6.txt
+timestamp=2026-11-15T01:37:52.961Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:52.973Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=8
+timestamp=2026-11-15T01:37:52.985Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:52.990Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcda8d4e001Og2u1CJFMQFIG1
+timestamp=2026-11-15T01:37:52.990Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:37:52.992Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:37:54.902Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible lab /tmp/opencode/lab5.txt" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:54.910Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible lab /tmp/opencode/lab6.txt" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:55.029Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:55.041Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=9
+timestamp=2026-11-15T01:37:55.053Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:55.058Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcda95620017fbocRInt78b8L
+timestamp=2026-11-15T01:37:55.058Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:37:55.060Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:37:58.210Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible frames lab 5" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:58.265Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible --json view 2" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:37:58.350Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:58.364Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=10
+timestamp=2026-11-15T01:37:58.375Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:37:58.378Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdaa25d001mjA61R8eQ8KFvM
+timestamp=2026-11-15T01:37:58.379Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:37:58.380Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:38:08.181Z level=INFO run=4f67b104 message=evaluated permission=external_directory pattern=/tmp/opencode/* action.permission=external_directory action.pattern=/tmp/opencode/* action.action=allow
+timestamp=2026-11-15T01:38:08.182Z level=INFO run=4f67b104 message=evaluated permission=edit pattern=tmp/opencode/lab7.txt action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:38:08.185Z level=INFO run=4f67b104 message=formatting file=/tmp/opencode/lab7.txt
+timestamp=2026-11-15T01:38:08.185Z level=INFO run=4f67b104 message="touching file" file=/tmp/opencode/lab7.txt
+timestamp=2026-11-15T01:38:09.215Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:38:09.231Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=11
+timestamp=2026-11-15T01:38:09.244Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:38:09.251Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdaccd0001ZQ5y6KfNqlETfk
+timestamp=2026-11-15T01:38:09.252Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:38:09.253Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:38:12.362Z level=INFO run=4f67b104 message=cleanup prune=7.days
+timestamp=2026-11-15T01:38:13.493Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible lab /tmp/opencode/lab7.txt" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:38:13.573Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:38:13.587Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=12
+timestamp=2026-11-15T01:38:13.601Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:38:13.608Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdaddd5001rOJa8FQqyBYOB7
+timestamp=2026-11-15T01:38:13.609Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:38:13.611Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:38:30.998Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 1 1" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:38:31.078Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:38:31.092Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=13
+timestamp=2026-11-15T01:38:31.104Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:38:31.107Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdb2235001T3F9eiicOmBRgv
+timestamp=2026-11-15T01:38:31.108Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:38:31.109Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:38:50.739Z level=INFO run=4f67b104 message=evaluated permission=external_directory pattern=/tmp/opencode/* action.permission=external_directory action.pattern=/tmp/opencode/* action.action=allow
+timestamp=2026-11-15T01:38:50.739Z level=INFO run=4f67b104 message=evaluated permission=edit pattern=tmp/opencode/lab8.txt action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:38:50.742Z level=INFO run=4f67b104 message=formatting file=/tmp/opencode/lab8.txt
+timestamp=2026-11-15T01:38:50.743Z level=INFO run=4f67b104 message="touching file" file=/tmp/opencode/lab8.txt
+timestamp=2026-11-15T01:38:50.754Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:38:50.766Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=14
+timestamp=2026-11-15T01:38:50.777Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:38:50.780Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdb6f0e001bFVTRzvxoU2ip7
+timestamp=2026-11-15T01:38:50.780Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:38:50.781Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:38:52.484Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible lab /tmp/opencode/lab8.txt" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:38:52.562Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:38:52.573Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=15
+timestamp=2026-11-15T01:38:52.584Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:38:52.588Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdb761e001pf7HAE7Li4lCc2
+timestamp=2026-11-15T01:38:52.589Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:38:52.589Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:38:55.225Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible frames lab 8" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:38:55.350Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:38:55.366Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=16
+timestamp=2026-11-15T01:38:55.378Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:38:55.381Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdb8108001d44InF416Qh1NZ
+timestamp=2026-11-15T01:38:55.382Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:38:55.382Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:39:13.841Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 1 5" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:39:13.927Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:39:13.939Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=17
+timestamp=2026-11-15T01:39:13.949Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:39:13.955Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdbc994001hEWOmwbIjuCmY8
+timestamp=2026-11-15T01:39:13.955Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:39:13.956Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:39:17.365Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 1 6" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:39:17.482Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:39:17.498Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=18
+timestamp=2026-11-15T01:39:17.508Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:39:17.513Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdbd77b001QYQ29WplLq00Zy
+timestamp=2026-11-15T01:39:17.513Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:39:17.514Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:39:24.151Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 1 3" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:39:24.221Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:39:24.233Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=19
+timestamp=2026-11-15T01:39:24.244Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:39:24.250Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdbf1ca001sZTU3fv3QpNIPP
+timestamp=2026-11-15T01:39:24.250Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:39:24.252Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:39:27.699Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 1 4" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:39:27.805Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:39:27.817Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=20
+timestamp=2026-11-15T01:39:27.828Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:39:27.830Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdbffca0011bX8g1I3LXGQGd
+timestamp=2026-11-15T01:39:27.831Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:39:27.831Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:39:43.243Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 1 7" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:39:43.360Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:39:43.372Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=21
+timestamp=2026-11-15T01:39:43.382Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:39:43.387Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdc3c8d001tLwRN7sqoVetff
+timestamp=2026-11-15T01:39:43.387Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:39:43.388Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:40:01.167Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible frames chamber 1 5 --every 3" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:40:01.239Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:40:01.253Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=22
+timestamp=2026-11-15T01:40:01.265Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:40:01.269Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdc8266001zViVr3axurUXfB
+timestamp=2026-11-15T01:40:01.269Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:40:01.269Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:40:29.577Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 2 1" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:40:29.659Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:40:29.673Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=23
+timestamp=2026-11-15T01:40:29.684Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:40:29.691Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdcf16b001qncfvfBZio7uFR
+timestamp=2026-11-15T01:40:29.691Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:40:29.693Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:40:31.921Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 2 6" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:40:32.011Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:40:32.021Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=24
+timestamp=2026-11-15T01:40:32.033Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:40:32.036Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdcfa96001zaBrz8cCOpL60S
+timestamp=2026-11-15T01:40:32.036Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:40:32.037Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:40:34.925Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 2 2" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:40:35.007Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:40:35.018Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=25
+timestamp=2026-11-15T01:40:35.029Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:40:35.033Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdd064c001AZMu5Nmi2qk3MR
+timestamp=2026-11-15T01:40:35.033Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:40:35.035Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:40:50.961Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 2 3" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:40:51.530Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:40:51.540Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=26
+timestamp=2026-11-15T01:40:51.554Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:40:51.560Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdd46d60010NKYbns0gVYK7H
+timestamp=2026-11-15T01:40:51.561Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:40:51.563Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:41:07.540Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 2 4" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:41:07.632Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:41:07.642Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=27
+timestamp=2026-11-15T01:41:07.656Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:41:07.663Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdd85bb001rG2XpMaVQY4sf6
+timestamp=2026-11-15T01:41:07.664Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:41:07.666Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:41:29.099Z level=INFO run=4f67b104 message=evaluated permission=todowrite pattern=* action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:41:29.137Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:41:29.149Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=28
+timestamp=2026-11-15T01:41:29.162Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:41:29.170Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcddd9be001ucMc3lzVD6FdjD
+timestamp=2026-11-15T01:41:29.170Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:41:29.171Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:41:46.428Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 3 2" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:41:46.598Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:41:46.610Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=29
+timestamp=2026-11-15T01:41:46.623Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:41:46.626Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcde1df40015UuldS8mm163rS
+timestamp=2026-11-15T01:41:46.627Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:41:46.628Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:41:48.208Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 3 3" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:41:48.481Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:41:48.495Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=30
+timestamp=2026-11-15T01:41:48.510Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:41:48.516Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcde2551001t0ImMwq9tiT68F
+timestamp=2026-11-15T01:41:48.516Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:41:48.517Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:41:50.439Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 3 6" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:41:50.605Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:41:50.620Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=31
+timestamp=2026-11-15T01:41:50.633Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:41:50.635Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcde2d9e0010zHV64ZM7x477E
+timestamp=2026-11-15T01:41:50.636Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:41:50.636Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:41:53.011Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 3 5" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:41:53.163Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:41:53.177Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=32
+timestamp=2026-11-15T01:41:53.188Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:41:53.192Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcde379b001yfcJOwDWyDUyZH
+timestamp=2026-11-15T01:41:53.192Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:41:53.193Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:41:57.893Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 3 1" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:41:58.083Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:41:58.098Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=33
+timestamp=2026-11-15T01:41:58.109Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:41:58.114Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcde4ad4001BiyreBgq62jqwy
+timestamp=2026-11-15T01:41:58.115Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:41:58.115Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:42:15.809Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible open 3 4" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:42:15.889Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:42:15.901Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=34
+timestamp=2026-11-15T01:42:15.913Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:42:15.917Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcde905f001M03FQT4J1j6iE5
+timestamp=2026-11-15T01:42:15.917Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:42:15.918Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:42:28.168Z level=INFO run=4f67b104 message=evaluated permission=bash pattern="crucible status" action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:42:28.245Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:42:28.257Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=35
+timestamp=2026-11-15T01:42:28.270Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:42:28.275Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdec0a3001zSWsB8C5blBGtw
+timestamp=2026-11-15T01:42:28.276Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:42:28.278Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol
+timestamp=2026-11-15T01:42:44.432Z level=INFO run=4f67b104 message=evaluated permission=todowrite pattern=* action.permission=* action.action=allow action.pattern=*
+timestamp=2026-11-15T01:42:44.495Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:42:44.509Z level=INFO run=4f67b104 message=loop session.id=ses_e23261121ffeaLQ2uMiJD2XFBH step=36
+timestamp=2026-11-15T01:42:44.524Z level=INFO run=4f67b104 message=tracking hash=4b825dc642cb6eb9a060e54bf8d69288fbee4904 cwd=/app git=/logs/agent/opencode/xdg-data/opencode/snapshot/global/42099b4af021e53fd8fd4e056c2568d7c2e3ffa8
+timestamp=2026-11-15T01:42:44.528Z level=INFO run=4f67b104 message=process session.id=ses_e23261121ffeaLQ2uMiJD2XFBH messageID=msg_1dcdf00200015Q1uq63RIUysnE
+timestamp=2026-11-15T01:42:44.529Z level=INFO run=4f67b104 message=stream providerID=openai modelID=gpt-6.1-sol session.id=ses_e23261121ffeaLQ2uMiJD2XFBH small=false agent=build mode=primary
+timestamp=2026-11-15T01:42:44.530Z level=INFO run=4f67b104 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=openai llm.model=gpt-6.1-sol

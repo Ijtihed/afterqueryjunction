@@ -2,20 +2,45 @@
     "schema_version": 1,
     "id": "efa11a9f-1005-4dc7-b81b-cb83c9a45b1b",
     "started_at": "2026-11-15T01:31:57.873414",
-    "updated_at": "2026-11-14T23:31:57.928227Z",
-    "finished_at": null,
+    "updated_at": "2026-11-15T01:55:04.204200",
+    "finished_at": "2026-11-15T01:55:04.204200",
     "n_total_trials": 3,
     "stats": {
-        "n_completed_trials": 0,
+        "n_completed_trials": 3,
         "n_errored_trials": 0,
-        "n_running_trials": 2,
-        "n_pending_trials": 1,
+        "n_running_trials": 0,
+        "n_pending_trials": 0,
         "n_cancelled_trials": 0,
         "n_retries": 0,
-        "evals": {},
-        "n_input_tokens": null,
-        "n_cache_tokens": null,
-        "n_output_tokens": null,
-        "cost_usd": null
+        "evals": {
+            "opencode__gpt-6.1-sol__adhoc": {
+                "n_trials": 3,
+                "n_errors": 0,
+                "metrics": [
+                    {
+                        "mean": 0.13333333333333333
+                    }
+                ],
+                "pass_at_k": {},
+                "reward_stats": {
+                    "reward": {
+                        "0.1333": [
+                            "crucible-001__3ChU9Rn"
+                        ],
+                        "0.1": [
+                            "crucible-001__tNQ3Sje"
+                        ],
+                        "0.1667": [
+                            "crucible-001__F2mgv4R"
+                        ]
+                    }
+                },
+                "exception_stats": {}
+            }
+        },
+        "n_input_tokens": 2399358,
+        "n_cache_tokens": 2398953,
+        "n_output_tokens": 6338,
+        "cost_usd": 0.8487077999999999
     }
 }

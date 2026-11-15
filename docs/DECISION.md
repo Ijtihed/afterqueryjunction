@@ -49,13 +49,13 @@ Crucible. It is the only candidate that combines the two findings that survive c
 
 ## F. Formal environment specification
 
-- **State.** Per chamber: a grid of cells (empty, wall, gate with id, or a substance id), a one-bit preference per cell, and a tick counter. Episode: a seeded skin (which visible symbol plays which role), five chambers, lab runs used, and the journal.
+- **State.** Per chamber: a grid of cells (empty, wall, gate with id, or a substance id), a one-bit preference per cell, and a tick counter. Episode: a seeded skin (which visible symbol plays which role), three hard chambers, lab runs used, and the journal.
 - **Substances.** Each has a phase (static, powder, liquid), a gravity direction (down or up) and a density. A moving cell passes through a liquid of opposite gravity or of the same gravity and lower density.
 - **Reactions.** Fire on 4-neighbour contact; each maps a pair to a pair (possibly empty). A reaction may require a reactant to have enough same-kind neighbours (bulk only). One product reacts with wall cells.
 - **Actions.** `lab(layout)` up to the run budget; `open(chamber, gate)`; `close(chamber)`.
 - **Transition.** Opening a gate removes its cells, then the simulation runs to a fixed point (bounded by a tick limit). Fixed scan order, no randomness.
 - **Observation.** Full grid, zones, objective counts, a reaction log, and tick-by-tick recordings on request. Hidden: substance behaviour and reactions.
-- **Goal and reward.** A chamber is complete when every zone holds its required count. Reward is the weighted sum of chamber scores (five chambers: 0.1, 0.1, 0.2, 0.2, 0.4), where an incomplete chamber earns 0.3 times its fraction of zones met.
+- **Goal and reward.** A chamber is complete when every zone holds its required count. Reward is the mean of the three chamber scores, where an incomplete chamber earns 0.3 times its fraction of zones met.
 - **Generator.** Seed chooses skin, mirror flip and gate numbering per chamber template. `scripts/validate.py` checks each seed exhaustively.
 - **Solver.** `Oracle` enumerates gate orders with memoisation. The reference player identifies roles with five lab runs through the public interface, then plans with the oracle.
 - **Diagnostics.** For every opening in a journal: winning orders before and after, whether it was the first fatal move, and which gates would have kept the chamber solvable.

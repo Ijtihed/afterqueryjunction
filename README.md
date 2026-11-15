@@ -2,7 +2,7 @@
 
 A Harbor task for AfterQuery's "Break the Agent" challenge (Junction 2026).
 
-An agent runs a sealed materials facility. Seven substances behave in ways it is not told. It has a small lab with 9 runs to learn them, then six chambers where its only action is opening a gate, permanently, with one attempt per chamber. A wrong opening can silently make a chamber unsolvable.
+An agent runs a sealed materials facility. Seven substances behave in ways it is not told. It has a small lab with 9 runs to learn them, then three chambers where its only action is opening a gate, permanently, with one attempt per chamber. A wrong opening can silently make a chamber unsolvable.
 
 It targets two weaknesses that the literature shows surviving code tools: discovering unfamiliar rules when experiments are scarce, and committing to irreversible actions whose consequences arrive later. See `docs/DECISION.md` for the research review and the design decision.
 
@@ -19,33 +19,30 @@ harbor run -p ./crucible-001 -a opencode -m <provider/model> -k 3   # three agen
 
 `crucible-002` and `crucible-003` are other seeds. `crucible-00N-rules` is the same facility with the true substance behaviour written into the instruction (the rule-discovery ablation). More seeds: `python3 scripts/build_tasks.py 4 5 6 --rules`.
 
-Nominate a strong model. The agent timeout is 120 minutes; the reference needs about 20 seconds.
+Nominate a strong model. The agent timeout is 120 minutes; agents typically stop themselves after about 5. The reference needs about 20 seconds. OpenCode is preinstalled in the task image, so trials start without a network install.
 
 ## The task
 
 - **Substances.** Each is static, a powder or a liquid, falls down or up, and has a density. Some pairs react on contact. One reaction only happens in bulk. One product reacts again with another substance, and that product eats walls. Symbols, names and colours are reshuffled per seed, so appearance tells nothing.
 - **Lab.** An 8 by 6 box. The agent draws any layout and it runs to rest under the same rules. 9 runs for the whole episode. Products cannot be placed; they have to be made inside a run.
 - **Chambers.** Substances sit in reservoirs behind numbered gates. `open` removes a gate for good and the world runs until nothing moves. Zones ask for a minimum count of a substance, sometimes one that does not exist yet.
-  Each facility has six chambers: two easy, two medium, two hard.
-  - *leak* (easy, 3 gates): plug a hole before pouring.
-  - *float* (easy, 4 gates): a light liquid reaches its zone only if a heavier one lifts it; one gate dissolves the floor seal.
-  - *cellar* (medium, 4 gates): the target is made only when a powder that falls upward meets liquid waiting above it.
-  - *tower* (medium, 6 gates): the elixir floats, so it needs enough liquid beneath it; three other gates each ruin it for a different reason.
-  - *foundry* (hard, 6 gates, 3 zones): seal a drain by making crust inside it, brew the elixir, then lift it over a spillway by pouring more liquid underneath. 7 of roughly 1,950 gate orders win.
-  - *works* (hard, 7 gates, 3 zones): the elixir must reach a sealed vault, and the only thing that opens the vault is made from the elixir itself. 245 of roughly 13,700 gate orders win.
+  Each facility has three chambers, all hard. Agents cleared the easier tiers in earlier runs, so those were removed; their layouts (leak, float, cellar, tower) remain in `engine/crucible/templates.py`.
+  - *works* (7 gates, 3 zones): the elixir must reach a sealed vault, and the only thing that opens the vault is made from the elixir itself.
+  - *foundry* (6 gates, 3 zones): seal a drain by making crust inside it, brew the elixir, then lift it over a spillway by pouring more liquid underneath. About 10 of roughly 1,950 gate orders win, and releasing the smaller reservoir first is already fatal.
+  - *refinery* (7 gates, 3 zones): foundry with a leaking receiver; the elixir is only kept if a powder plug is dropped into the receiver's drain in time.
 - **Observations.** The full grid, zone counts, a log of every reaction that occurred, and tick-by-tick recordings on request. Nothing a human sees in the browser version is withheld.
 
 The agent gets a `crucible` CLI (`brief`, `view`, `lab`, `open`, `close`, `frames`, `status`) and may write any code it likes. The full statement is `task-template/instruction.md`.
 
 ## Scoring
 
-Reward = 0.1 x c1 + 0.1 x c2 + 0.15 x c3 + 0.15 x c4 + 0.25 x c5 + 0.25 x c6, where a complete chamber scores 1 and an incomplete one scores 0.3 x (zones met / zones). It is written to `/logs/verifier/reward.txt`.
+Reward = (c1 + c2 + c3) / 3, where a complete chamber scores 1 and an incomplete one scores 0.3 x (zones met / zones). It is written to `/logs/verifier/reward.txt`.
 
 | Policy (seeds 1 to 3, graded by journal replay) | Reward |
 | --- | --- |
 | Do nothing | 0.000 |
-| Open one gate per chamber, then stop | 0.000 |
-| Uniformly random gate orders (mean of 200) | 0.19 |
+| Open one gate per chamber, then stop | 0.00 to 0.03 |
+| Uniformly random gate orders (mean of 200) | 0.13 |
 | Reference | 1.000 |
 
 Reproduce with `python3 scripts/baselines.py`.
@@ -82,21 +79,22 @@ prints, per opening, how many winning orders existed before and after, flags the
 
 **Harbor, local Docker, Harbor 0.26.0, tasks `crucible-001` to `003` (six chambers):** reference (`-a oracle`) 1.0000 on all three, do nothing (`-a nop`) 0.0000 on `001`. Logs are in `results/harbor/`.
 
-**Frontier agents through Harbor and OpenCode (the official harness).** Task `crucible-001`, 9 lab runs, OpenCode at its default settings, 2 hour agent timeout. Full logs, trajectories and journals are under `results/harbor/opencode-*/`; regenerate this table with `python3 scripts/summarize_runs.py`.
+**Frontier agents through Harbor and OpenCode (the official harness).** Task `crucible-001` (three hard chambers, 9 lab runs), OpenCode 1.19.5 at its default settings. Logs, trajectories and journals are under `results/harbor/opencode-*/`; regenerate the table with `python3 scripts/summarize_runs.py`.
 
 | Model | Trials | Rewards | Mean | Reference |
 | --- | --- | --- | --- | --- |
-| `openai/gpt-6.1-terra` | 3 | 0.675, 0.45, 0.45 | 0.525 | 1.00 |
-| `openai/gpt-6.1-sol` | 3 | 0.575, 0.575, 0.40 | 0.517 | 1.00 |
-| `openai/gpt-6-astra` | 1 | 0.575 | 0.575 | 1.00 |
+| `openai/gpt-6.1-sol` | 3 | 0.133, 0.167, 0.100 | 0.133 | 1.00 |
+| `openai/gpt-6.1-terra` | 3 | 0.133, 0.400, 0.700 | 0.411 | 1.00 |
+| `openai/gpt-6-astra` | 1 | 0.400 | 0.400 | 1.00 |
 
-- **Every trial lost foundry at its first opening.** Each released the smaller reservoir first; every winning order needs the larger pour first, and the consequence only shows several openings later.
-- **Works was lost in 6 of 7 trials**, at opening 4 or 5 in the Sol and Astra runs (after several correct moves) and at opening 1 in two Terra runs.
-- Terra also lost the easy leak chamber in all three trials by pouring before plugging the hole.
-- No trial hit a tool error or a timeout. Each made about 50 tool calls, used 8 or 9 lab runs, and ended its own session after about 5 minutes, naming the chambers it had not finished.
-- Caveats: one seed, default reasoning effort, small n. Cost reported by Harbor: $2.62 for these 7 trials.
+- Chambers lost: foundry in 6 of 7 trials (5 of them at the very first opening), works in 6 of 7, refinery in 5 of 7.
+- The typical loss is an opening that looks harmless and removes every winning order, discovered only several openings later.
+- No trial hit a tool error or a timeout. Each used all 9 lab runs and ended its own session. One Terra trial is flagged `NonZeroAgentExitCodeError`: OpenCode returns 1 when the final message is empty; the session itself completed.
+- Caveats: one seed, default reasoning effort, n of 1 to 3. Cost reported by Harbor: $2.84 for these 7 trials.
 
-**Blind pilots (not Harbor runs, and on the earlier three-chamber layout).** The pilots below played leak, cellar and works with weights 0.2, 0.3, 0.5, before float, tower and foundry were added. Their journals replay at git tag `pilots-3-chamber`, not at the current head. One pilot has played the current six-chamber layout (pilot 7, seed 41, journal `results/pilots/v3-pilot7-seed41.jsonl`, replays at the current head): reward 0.775. It completed five chambers, including the new foundry, and lost works at its sixth opening, the same way pilots 5 and 6 did: an earlier pour had pushed a resting liquid to a spot it had not predicted, and the wall-eating product then breached the wrong wall. Works is 0 for 3 across clean pilots; no other chamber type has been failed. Replay: `results/replay-pilot7-seed41.html`.
+**Same agents on the earlier six-chamber layout** (two easy, two medium, two hard; archived in `results/harbor-v4-six-chambers/`, git tag `v4-six-chambers`): Terra 0.675, 0.45, 0.45; Sol 0.575, 0.575, 0.40; Astra 0.575. They completed most easy and medium chambers there with the same tools and interface, which is the control showing the losses above are not interface failures.
+
+**Blind pilots with Claude Fable 5.2 (not Harbor runs, earlier layouts).** The pilots below played earlier layouts that still included easy and medium chambers. Their journals replay at git tag `pilots-3-chamber`, not at the current head. One pilot has played the current six-chamber layout (pilot 7, seed 41, journal `results/pilots/v3-pilot7-seed41.jsonl`, replays at the current head): reward 0.775. It completed five chambers, including the new foundry, and lost works at its sixth opening, the same way pilots 5 and 6 did: an earlier pour had pushed a resting liquid to a spot it had not predicted, and the wall-eating product then breached the wrong wall. Works is 0 for 3 across clean pilots; no other chamber type has been failed. Replay: `results/replay-pilot7-seed41.html`.
 
  To get an early signal, a frontier model (Claude Fable 5.2, as a sub-agent with a shell) was given only `instruction.md` and the `crucible` CLI against a local server, with no access to the source. Journals are in `results/pilots/`, graded by the same replay code as the verifier.
 

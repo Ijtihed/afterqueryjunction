@@ -26,7 +26,8 @@ def reference_journal(seed: int, salt: str) -> list:
 
 
 def analyze(seed: int, journal: list, label: str, salt: str = DEFAULT_SALT, frame_stride: int = 1) -> dict:
-    ep = Episode(seed, salt)
+    # Replays journals recorded under any lab budget; the verifier enforces the budget, not this tool.
+    ep = Episode(seed, salt, lab_budget=max(1, sum(1 for e in journal if e.get("t") == "lab")))
     oracles = [Oracle(ep.phys) for _ in ep.chambers]
     run = {"label": label, "lab": [], "chambers": [], "events": []}
     for i, ch in enumerate(ep.chambers):

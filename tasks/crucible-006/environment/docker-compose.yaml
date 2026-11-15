@@ -11,7 +11,7 @@ services:
       context: ./sim
     environment:
       CRUCIBLE_SEED: "6"
-      CRUCIBLE_LAB_RUNS: "9"
+      CRUCIBLE_LAB_RUNS: "6"
     expose:
       - "8000"
     healthcheck:

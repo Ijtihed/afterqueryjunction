@@ -12,7 +12,7 @@ from .chambers import (BASE_ROLES, ROLE_ID, TEMPLATES, Chamber, Skin, build, fam
 from .engine import EMPTY, GATE, MAT0, WALL, World, settle
 from .oracle import apply_open
 
-LAB_W, LAB_H, LAB_RUNS = 8, 6, 9
+LAB_W, LAB_H, LAB_RUNS = 8, 6, 6
 TIER_PLAN = [(3, 3)]  # (tier, chambers drawn without repeats)
 WEIGHTS = {3: 1 / 3}
 PARTIAL = 0.3

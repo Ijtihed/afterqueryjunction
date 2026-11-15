@@ -1,0 +1,124 @@
+{
+    "schema_version": 1,
+    "id": "76da28fb-f393-4157-83bf-c846d0ee8d88",
+    "task_name": "crucible/crucible-001",
+    "trial_name": "crucible-001__KnzUxqm",
+    "trial_uri": "file:///home/ijtihed/crucible/results/harbor/nop/2026-11-15__04-41-43/crucible-001__KnzUxqm",
+    "task_id": {
+        "path": "crucible-001"
+    },
+    "source": null,
+    "task_checksum": "f3bfc06f82ec97ef90db08b757773343702c9560fc49e5045d450eec1483e056",
+    "config": {
+        "schema_version": 1,
+        "task": {
+            "path": "crucible-001",
+            "git_url": null,
+            "git_commit_id": null,
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": null
+        },
+        "trial_name": "crucible-001__KnzUxqm",
+        "trials_dir": "../results/harbor/nop/2026-11-15__04-41-43",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": "nop",
+            "import_path": null,
+            "model_name": null,
+            "base_url": null,
+            "model_api_key_name": null,
+            "model_api_format": null,
+            "skip_model_parsing": false,
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "resume_trajectory": false,
+            "load_trajectory": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {},
+            "mcp_servers": []
+        },
+        "user_agent": null,
+        "environment": {
+            "type": "docker",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "stream": false,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {},
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "override_error_policy": {},
+        "artifacts": [],
+        "extra_instruction_paths": [],
+        "extra_instructions": [],
+        "job_id": "60a72529-2e4a-4992-92ac-5daf40b43782",
+        "source_trial": null
+    },
+    "agent_info": {
+        "name": "nop",
+        "version": "1.0.0",
+        "model_info": null
+    },
+    "agent_result": {
+        "n_input_tokens": null,
+        "n_cache_tokens": null,
+        "n_output_tokens": null,
+        "cost_usd": null,
+        "model_usage": null,
+        "rollout_details": null,
+        "metadata": null
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 0.0
+        }
+    },
+    "verifier_environment_mode": "separate",
+    "exception_info": null,
+    "started_at": "2026-11-15T02:41:43.318273Z",
+    "finished_at": "2026-11-15T02:42:31.141599Z",
+    "environment_setup": {
+        "started_at": "2026-11-15T02:41:43.334455Z",
+        "finished_at": "2026-11-15T02:41:52.234861Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-11-15T02:41:52.234949Z",
+        "finished_at": "2026-11-15T02:41:52.235054Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-11-15T02:41:52.235176Z",
+        "finished_at": "2026-11-15T02:41:52.236042Z"
+    },
+    "verifier": {
+        "started_at": "2026-11-15T02:42:13.610507Z",
+        "finished_at": "2026-11-15T02:42:31.141583Z"
+    },
+    "step_results": null,
+    "reward_valid": true
+}

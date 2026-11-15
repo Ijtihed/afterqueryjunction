@@ -18,7 +18,7 @@ Complete as many chambers as you can. A chamber is complete when every objective
 
 ## Lab
 
-- You have 9 lab runs in total, shared across all chambers.
+- You have 6 lab runs in total, shared across all chambers.
 - For each run you draw a layout in a box 8 cells wide and 6 high, using `.` (empty), `#` (wall) and the seven substance symbols. The box is enclosed by walls. The layout then runs until nothing moves.
 - The lab follows exactly the same rules as the chambers. The rules are deterministic.
 - Lab runs never change a chamber.

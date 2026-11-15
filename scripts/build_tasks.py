@@ -3,7 +3,7 @@
 
 Usage: python3 scripts/build_tasks.py [seed ...] [--rules] [--lab-runs N]
 
---lab-runs N sets the lab budget (default 9) and adds a -labN suffix.
+--lab-runs N sets the lab budget (default 6) and adds a -labN suffix.
 
 --rules also writes a <name>-rules variant whose instruction discloses the
 facility's true substance behaviour (the rule-discovery ablation).
@@ -16,7 +16,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ENGINE = os.path.join(ROOT, "engine", "crucible")
 ENGINE_FILES = ["__init__.py", "core.c", "engine.py", "chambers.py", "templates.py", "oracle.py", "episode.py", "server.py"]
 DEFAULT_SEEDS = [1, 2, 3, 4, 5]
-DEFAULT_LAB = 9
+DEFAULT_LAB = 6
 
 
 def copy_engine(dst, files=ENGINE_FILES):
@@ -61,8 +61,8 @@ def build(seed: int, rules: bool = False, lab: int = DEFAULT_LAB) -> str:
         open(p, "w").write(s)
     ip = os.path.join(out, "instruction.md")
     text = open(ip).read()
-    assert "You have 9 lab runs" in text
-    open(ip, "w").write(text.replace("You have 9 lab runs", f"You have {lab} lab runs"))
+    assert "You have 6 lab runs" in text
+    open(ip, "w").write(text.replace("You have 6 lab runs", f"You have {lab} lab runs"))
     if rules:
         with open(os.path.join(out, "instruction.md"), "a") as f:
             f.write(rules_card(seed))

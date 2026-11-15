@@ -1,0 +1,22 @@
+# Harbor configures `main` (the agent container). The simulator runs as a
+# sidecar: the seed, the rules and the journal exist only there.
+services:
+  main:
+    depends_on:
+      sim:
+        condition: service_healthy
+
+  sim:
+    build:
+      context: ./sim
+    environment:
+      CRUCIBLE_SEED: "3"
+      CRUCIBLE_LAB_RUNS: "9"
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+      start_period: 3s

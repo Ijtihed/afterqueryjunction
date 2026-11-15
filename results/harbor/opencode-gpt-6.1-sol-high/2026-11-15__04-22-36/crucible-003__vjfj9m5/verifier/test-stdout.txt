@@ -1,0 +1,57 @@
+{
+ "seed": 3,
+ "lab_budget": 9,
+ "reward": 0.7333,
+ "chambers": [
+  {
+   "chamber": "foundry",
+   "tier": 3,
+   "objectives_met": 3,
+   "objectives": 3,
+   "complete": true,
+   "score": 1.0,
+   "weight": 0.3333,
+   "gates_opened": [
+    1,
+    5,
+    4,
+    3
+   ]
+  },
+  {
+   "chamber": "refinery",
+   "tier": 3,
+   "objectives_met": 3,
+   "objectives": 3,
+   "complete": true,
+   "score": 1.0,
+   "weight": 0.3333,
+   "gates_opened": [
+    6,
+    3,
+    1,
+    7,
+    4
+   ]
+  },
+  {
+   "chamber": "works",
+   "tier": 3,
+   "objectives_met": 2,
+   "objectives": 3,
+   "complete": false,
+   "score": 0.2,
+   "weight": 0.3333,
+   "gates_opened": [
+    6,
+    4,
+    3,
+    5,
+    2,
+    7
+   ]
+  }
+ ],
+ "lab_runs_used": 9,
+ "actions": 24
+}

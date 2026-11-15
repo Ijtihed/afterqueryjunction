@@ -31,7 +31,11 @@ def main():
         jp = os.path.join(trial, "artifacts", "var", "crucible", "journal.jsonl")
         reward_file = os.path.join(trial, "verifier", "reward.txt")
         reward = open(reward_file).read().strip() if os.path.exists(reward_file) else "none"
-        lost, labs = "no journal", "?"
+        lost, labs, budget = "no journal", "?", "?"
+        dj = os.path.join(trial, "verifier", "details.json")
+        if os.path.exists(dj):
+            budget = json.load(open(dj)).get("lab_budget", 9)
+        effort = "high" if "-high" in trial else "default"
         if os.path.exists(jp):
             run = analyze(seed, load_journal(jp), "t")
             labs = run["score"]["lab_runs_used"]
@@ -42,11 +46,12 @@ def main():
                 k = ch["first_fatal_step"]
                 parts.append(f"{ch['name']} ({'fatal at opening ' + str(k) if k else 'never made unsolvable' if ch['steps'] else 'untouched'})")
             lost = "; ".join(parts) or "none"
-        rows.append((model, m.group(0)[:-2], reward, labs, f"{cost:.2f}", lost, os.path.relpath(trial, ROOT)))
-    print("| Model | Task | Reward | Lab runs | Cost $ | Chambers lost | Trial |")
-    print("| --- | --- | --- | --- | --- | --- | --- |")
+        rows.append((model, effort, f"seed {seed}", budget, reward, labs, f"{cost:.2f}", lost, os.path.relpath(trial, ROOT)))
+    print("| Model | Effort | Facility | Lab budget | Reward | Lab runs used | Cost $ | Chambers lost | Trial |")
+    print("| --- | --- | --- | --- | --- | --- | --- | --- | --- |")
+    rows.sort(key=lambda r: (str(r[3]), r[0], r[1], r[2]))
     for row in rows:
-        print("| " + " | ".join(str(x) for x in row[:6]) + f" | `{os.path.basename(row[6])}` |")
+        print("| " + " | ".join(str(x) for x in row[:8]) + f" | `{os.path.basename(row[8])}` |")
     print(f"\nTotal cost reported by Harbor: ${total:.2f} over {len(rows)} trials")
 
 

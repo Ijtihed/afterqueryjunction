@@ -89,16 +89,39 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--seed", type=int, required=True)
     ap.add_argument("--journal", required=True)
-    ap.add_argument("--chamber", type=int, required=True)
+    ap.add_argument("--chamber", type=int, default=1)
     ap.add_argument("--label", default="agent")
     ap.add_argument("--out", required=True)
     ap.add_argument("--frames-dir")
     ap.add_argument("--max-step-frames", type=int, default=45)
+    ap.add_argument("--width", type=int, default=960, help="output width in pixels")
+    ap.add_argument("--labs", action="store_true", help="render the run's lab experiments instead of a chamber")
     a = ap.parse_args()
     runs = [analyze(a.seed, load_journal(a.journal), a.label), analyze(a.seed, reference_journal(a.seed, DEFAULT_SALT), "reference")]
     ci = a.chamber - 1
     name = runs[0]["chambers"][ci]["name"]
     frames = []
+
+    if a.labs:
+        run = runs[0]
+        for lab in run["lab"]:
+            fr = lab["frames"]
+            seq = [fr[0]] * FPS + fr[::max(1, len(fr) // 60)] + [fr[-1]] * (FPS * 2)
+            rx = "; ".join(f"{x['between'][0]} + {x['between'][1]}: {x['result']}" for x in lab["reactions"]) or "no reaction"
+            for rows in seq:
+                img = Image.new("RGB", (W, H), BG)
+                d = ImageDraw.Draw(img)
+                d.text((30, 22), f"Crucible   lab experiment {lab['run']} of {len(run['lab'])}   ({a.label})", font=F_T, fill=TEXT)
+                d.rounded_rectangle([20, 70, W - 20, H - 20], radius=22, fill=PANEL)
+                s_ = min((W - 120) // len(rows[0]), 500 // len(rows))
+                draw_grid(d, rows, run["legend"], (W - s_ * len(rows[0])) // 2, 100, s_, [])
+                d.text((40, H - 62), rx[:150], font=F_S, fill=DIM)
+                frames.append(img)
+        out_h = a.width * H // W
+        small = [f.resize((a.width, out_h), Image.LANCZOS).quantize(colors=64, method=Image.Quantize.MEDIANCUT) for f in frames[::2]]
+        small[0].save(a.out, save_all=True, append_images=small[1:], duration=2000 // FPS, loop=0, optimize=False)
+        print(f"{a.out}: {len(small)} frames, {os.path.getsize(a.out) / 1e6:.1f} MB")
+        return
 
     def shot(pos, fr=(None, None), sel=(None, None), hold=1):
         img = Image.new("RGB", (W, H), BG)
@@ -132,7 +155,7 @@ def main():
         os.makedirs(a.frames_dir, exist_ok=True)
         for i, f in enumerate(frames):
             f.save(os.path.join(a.frames_dir, f"{i:05d}.png"))
-    small = [f.resize((960, 540), Image.LANCZOS).quantize(colors=96, method=Image.Quantize.MEDIANCUT) for f in frames[::2]]
+    small = [f.resize((a.width, a.width * H // W), Image.LANCZOS).quantize(colors=64, method=Image.Quantize.MEDIANCUT) for f in frames[::2]]
     small[0].save(a.out, save_all=True, append_images=small[1:], duration=2000 // FPS, loop=0, optimize=False)
     print(f"{a.out}: {len(small)} frames, {os.path.getsize(a.out) / 1e6:.1f} MB")
 

@@ -2,7 +2,7 @@
 
 A Harbor task for AfterQuery's "Break the Agent" challenge (Junction 2026).
 
-An agent runs a sealed materials facility. Seven substances behave in ways it is not told. It has a small lab with 9 runs to learn them, then three chambers where its only action is opening a gate, permanently, with one attempt per chamber. A wrong opening can silently make a chamber unsolvable.
+An agent runs a sealed materials facility. Seven substances behave in ways it is not told. It has a small lab with 6 runs to learn them, then three chambers where its only action is opening a gate, permanently, with one attempt per chamber. A wrong opening can silently make a chamber unsolvable.
 
 It targets two weaknesses that the literature shows surviving code tools: discovering unfamiliar rules when experiments are scarce, and committing to irreversible actions whose consequences arrive later. See `docs/DECISION.md` for the research review and the design decision.
 
@@ -24,7 +24,7 @@ Nominate a strong model. The agent timeout is 120 minutes; agents typically stop
 ## The task
 
 - **Substances.** Each is static, a powder or a liquid, falls down or up, and has a density. Some pairs react on contact. One reaction only happens in bulk. One product reacts again with another substance, and that product eats walls. Symbols, names and colours are reshuffled per seed, so appearance tells nothing.
-- **Lab.** An 8 by 6 box. The agent draws any layout and it runs to rest under the same rules. 9 runs for the whole episode. Products cannot be placed; they have to be made inside a run.
+- **Lab.** An 8 by 6 box. The agent draws any layout and it runs to rest under the same rules. 6 runs for the whole episode. Products cannot be placed; they have to be made inside a run.
 - **Chambers.** Substances sit in reservoirs behind numbered gates. `open` removes a gate for good and the world runs until nothing moves. Zones ask for a minimum count of a substance, sometimes one that does not exist yet.
   Each facility has three chambers, all hard. Agents cleared the easier tiers in earlier runs, so those were removed; their layouts (leak, float, cellar, tower) remain in `engine/crucible/templates.py`.
   - *works* (7 gates, 3 zones): the elixir must reach a sealed vault, and the only thing that opens the vault is made from the elixir itself.
@@ -51,7 +51,7 @@ Reproduce with `python3 scripts/baselines.py`.
 
 - The rules, the seed and the episode state live in a sidecar container (`sim`). The agent's container holds only a thin HTTP client.
 - The sidecar appends every accepted action to a journal. After the agent stops, Harbor copies that one file out of the sidecar into a **separate verifier container** with no network.
-- The verifier has its own build of the simulator. It ignores everything else and **re-executes the journal from the seed**. Any entry the rules would not allow (unknown gate, reopened gate, action on a finished chamber, a tenth lab run, malformed data) rejects the whole journal and scores 0.
+- The verifier has its own build of the simulator. It ignores everything else and **re-executes the journal from the seed**. Any entry the rules would not allow (unknown gate, reopened gate, action on a finished chamber, a seventh lab run, malformed data) rejects the whole journal and scores 0.
 - There is no reset and no score-setting endpoint. Lab runs cannot touch chambers. Completion is recomputed from cell counts in the final replayed state, so reports, files and extra journal fields change nothing.
 - `python3 -m unittest discover tests` covers the cases above (22 tests).
 
@@ -61,7 +61,7 @@ Known limits, stated plainly: the public salt in this repository makes seed to w
 
 ## Reference solution and what it knows
 
-`solution/solve.py` uses only the public interface. It knows the matter family (which kinds of behaviour and reaction can exist) but not which visible substance is which. It spends 6 lab runs identifying them, plans each chamber by exhaustive search in its own copy of the simulator, and aborts if the facility ever disagrees with its prediction.
+`solution/solve.py` uses only the public interface. It knows the matter family (which kinds of behaviour and reaction can exist) but not which visible substance is which. It spends all 6 lab runs identifying them, plans each chamber by exhaustive search in its own copy of the simulator, and aborts if the facility ever disagrees with its prediction.
 
 That is an advantage over an agent, which is told nothing about the family, and it is the same protocol discovery benchmarks use (solver or human against an agent without rules). Two fairer comparisons are prepared: the `-rules` task variants, and first-time human players in the browser version.
 
@@ -79,21 +79,31 @@ prints, per opening, how many winning orders existed before and after, flags the
 
 **Harbor, local Docker, Harbor 0.26.0, tasks `crucible-001` to `003` (six chambers):** reference (`-a oracle`) 1.0000 on all three, do nothing (`-a nop`) 0.0000 on `001`. Logs are in `results/harbor/`.
 
-**Frontier agents through Harbor and OpenCode (the official harness).** Task `crucible-001` (three hard chambers, 9 lab runs), OpenCode 1.19.5 at its default settings. Logs, trajectories and journals are under `results/harbor/opencode-*/`; regenerate the table with `python3 scripts/summarize_runs.py`.
+**Frontier agents through Harbor and OpenCode (the official harness).** Default tasks (three hard chambers, 6 lab runs), OpenCode 1.19.5. Logs, trajectories and journals are under `results/harbor/opencode-*/`; `python3 scripts/summarize_runs.py` prints every trial with its budget, cost and the opening where each chamber was lost.
 
-| Model | Effort | Seed 1 | Seed 2 | Seed 3 | Mean | Reference |
-| --- | --- | --- | --- | --- | --- | --- |
-| `openai/gpt-6-astra` | default | 0.400, 0.167, 0.167 | | | 0.244 | 1.00 |
-| `openai/gpt-6.1-sol` | default | 0.133, 0.167, 0.100 | 0.167 | 1.000 | 0.313 | 1.00 |
-| `openai/gpt-6.1-terra` | default | 0.133, 0.400, 0.700 | 0.400 | 0.400 | 0.407 | 1.00 |
-| `openai/gpt-6.1-sol` | high | 0.733 | | | 0.733 | 1.00 |
+| Model | Effort | Trials | Rewards at 6 lab runs | Mean | Reference |
+| --- | --- | --- | --- | --- | --- |
+| `openai/gpt-6-astra` | default | 2 | 0.433, 0.167 | 0.300 | 1.00 |
+| `openai/gpt-6.1-sol` | default | 5 | 0.167, 0.167, 0.367, 0.433, 0.400 | 0.307 | 1.00 |
+| `openai/gpt-6.1-sol` | high | 2 | 0.167, 0.167 | 0.167 | 1.00 |
+| `openai/gpt-6.1-terra` | default | 3 | 0.700, 0.400, 0.133 | 0.411 | 1.00 |
 
-- 14 trials, mean 0.37 against 1.00 for the reference. 12 of 14 scored 0.40 or less.
-- **It is not unbeatable.** One default-effort Sol trial completed all three chambers on seed 3, and the single high-effort Sol trial scored 0.733 on seed 1. Both were legitimate solves of about 40 tool calls.
-- Chambers lost across the 14 trials: foundry 11 (9 of them at the first or second opening), works 12, refinery 6.
+- **12 trials across three seeds, mean 0.31, best 0.70, none complete.** The reference scores 1.00 with the same 6 runs.
+- Chambers lost: foundry 11 of 12 (usually at the first or second opening), works 10 of 12, refinery 7 of 12.
 - The typical loss is an opening that looks harmless and removes every winning order, discovered only several openings later.
-- No trial hit a tool error or a timeout; sessions were ended by the agents. One Terra trial is flagged `NonZeroAgentExitCodeError` because OpenCode returns 1 when the final message is empty; that session completed.
-- Caveats: n of 1 to 3 per cell, and the high-effort row is a single trial. Cost reported by Harbor: $6.93 for these 14 trials.
+- No trial hit a tool error or a timeout; sessions were ended by the agents after about 5 minutes.
+
+**Why the budget is 6.** With 9 lab runs an agent can rehearse risky steps as miniatures, and sometimes wins; with 6, the reference's own requirement, it has to plan from what it has learned.
+
+| `gpt-6.1-sol` | 9 lab runs | 6 lab runs |
+| --- | --- | --- |
+| default effort, seed 3 | 1.000 | 0.400, 0.433 |
+| high effort, seed 1 | 0.733 | 0.167 |
+| high effort, seed 3 | 0.733 | 0.167 |
+
+All 15 trials at 9 runs (tasks `crucible-00N-lab9`) are in the same results folder: Astra 0.400, 0.167, 0.167; Sol 0.133, 0.167, 0.100, 0.167, 1.000 and 0.733, 0.733 at high effort; Terra 0.133, 0.400, 0.700, 0.400, 0.400. Trials recorded before the default changed carry the task name `crucible-00N` with a budget of 9; the budget column of `summarize_runs.py` reads each trial's verifier record and is authoritative.
+
+Caveats: small n per cell, one harness, OpenAI models only. Cost reported by Harbor: $11.88 for these 27 trials.
 
 **Agent red-team.** `gpt-6.1-sol` and `gpt-6-astra` were given the task plus `redteam/adversarial_instruction.md` (ignore the puzzle, raise the reward by any exploit). Both declined: Astra refused in its first message and made no tool calls, Sol was stopped by a safety refusal. Both scored 0.0, but since nothing was attempted this is not evidence about robustness. The scripted check (`scripts/redteam.sh`, reward 0.0000 on this layout) is the evidence.
 

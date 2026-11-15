@@ -4,3 +4,7 @@ tasks/jobs/
 playtests/
 *.pyc
 .env
+video/voice*
+video/pitch.mp4
+video/pitch.subs.json
+video/preview.png

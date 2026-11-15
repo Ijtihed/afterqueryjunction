@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crucible</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{margin:0;background:#0a0a0a;color:#eee;font-family:'Manrope',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+main{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none}
+main::-webkit-scrollbar{display:none}
+
+.s{min-height:100vh;height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;padding:8vh 8vw;position:relative;overflow:hidden}
+.sn{position:absolute;top:16px;right:18px;font-weight:800;font-size:10px;letter-spacing:.25em;color:#333}
+
+h1{font-size:clamp(64px,11vw,150px);font-weight:800;letter-spacing:-.05em;line-height:.86;color:#fff}
+h2{font-size:clamp(36px,6vw,84px);font-weight:800;letter-spacing:-.04em;line-height:.9;color:#fff}
+p{font-size:20px;color:#888;line-height:1.5;max-width:640px}
+.mono{font-family:'JetBrains Mono',monospace}
+.red{color:#ff453a}.dim{color:#333}
+
+nav{position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:5px}
+nav button{width:4px;border-radius:99px;border:none;cursor:pointer;transition:all .15s;padding:0}
+nav button.on{height:14px;background:#fff}
+nav button:not(.on){height:4px;background:rgba(255,255,255,.06)}
+.hint{font-size:10px;text-transform:uppercase;letter-spacing:.2em;color:rgba(255,255,255,.18);margin-top:32px}
+
+/* entrance: everything on a slide rises in when the slide becomes active */
+.s .in{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.s.live .in{opacity:1;transform:none}
+.s.live .in.d1{transition-delay:.15s}.s.live .in.d2{transition-delay:.45s}.s.live .in.d3{transition-delay:.8s}.s.live .in.d4{transition-delay:1.2s}
+
+/* split slides: words left, picture right */
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:5vw;align-items:center}
+.shot{width:100%;border:1px solid #1a1a1a;border-radius:6px;display:block;background:#000}
+.full{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:11vh 5vw 13vh}
+.full img{height:100%;width:auto;max-width:100%;object-fit:contain;border:1px solid #1a1a1a;border-radius:6px}
+.cap{position:absolute;left:8vw;bottom:5vh;right:8vw;display:flex;justify-content:space-between;align-items:baseline;gap:24px}
+.cap h2{font-size:clamp(28px,4vw,56px)}
+.cap p{font-size:16px;text-align:right}
+
+/* chart */
+.chart{margin-top:5vh;display:flex;flex-direction:column;gap:14px;max-width:1100px}
+.row{display:grid;grid-template-columns:230px 1fr 78px;align-items:center;gap:18px}
+.row .name{font-weight:700;font-size:17px;color:#bbb;white-space:nowrap}
+.row .name small{display:block;font-weight:400;font-size:11px;color:#555;letter-spacing:.04em}
+.track{position:relative;height:30px;background:#111;border:1px solid #161616}
+.bar{position:absolute;left:0;top:0;bottom:0;width:0;background:#ff453a;transition:width 1.5s cubic-bezier(.2,.7,.2,1)}
+.row.ref .bar{background:#fff}.row.ref .name{color:#fff}
+.row.zero .bar{background:#333}
+.dot{position:absolute;top:50%;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:#0a0a0a;border:2px solid #fff;opacity:0;transition:opacity .5s 1.5s}
+.s.live .dot{opacity:1}
+.val{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:#fff;text-align:right;font-variant-numeric:tabular-nums}
+.axis{display:grid;grid-template-columns:230px 1fr 78px;gap:18px;margin-top:8px;max-width:1100px}
+.axis div:nth-child(2){display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#555}
+
+/* big number pairs */
+.pairs{display:grid;grid-template-columns:1fr 1fr;gap:6vw;margin-top:6vh;max-width:1000px}
+.pair .lab{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#444;font-weight:700}
+.pair .n{font-size:clamp(70px,11vw,160px);font-weight:800;letter-spacing:-.05em;line-height:.9;font-variant-numeric:tabular-nums}
+.pair.b .n{color:#ff453a}
+.pair p{font-size:15px;margin-top:8px}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:4vw;margin-top:7vh;max-width:1100px}
+.stat .n{font-size:clamp(48px,7vw,104px);font-weight:800;letter-spacing:-.05em;line-height:.9;color:#fff;font-variant-numeric:tabular-nums}
+.stat p{font-size:15px;margin-top:10px}
+
+/* timing bar and rehearsal notes */
+#bar{position:fixed;left:0;bottom:0;height:2px;background:#fff;width:0;z-index:60;opacity:.5}
+#clock{position:fixed;left:18px;top:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#333;z-index:60}
+#notes{position:fixed;left:0;right:0;bottom:0;background:rgba(10,10,10,.94);border-top:1px solid #1a1a1a;padding:16px 8vw 20px;font-size:17px;line-height:1.45;color:#ddd;z-index:55;display:none}
+#notes b{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#555;display:block;margin-bottom:6px;font-weight:500}
+body.notes #notes{display:block}
+</style>
+</head>
+<body>
+<nav id="dots"></nav>
+<div id="clock">PRESS SPACE</div>
+<div id="bar"></div>
+<div id="notes"><b id="nt"></b><span id="nx"></span></div>
+<main id="main">
+
+<!-- 1 · 0:00 to 0:07 -->
+<section class="s" data-dur="7" data-say="This is Crucible. Frontier agents learn every rule of this world correctly. Then they destroy their own way out.">
+  <h1 class="in">Crucible.</h1>
+  <p class="in d2" style="margin-top:32px">Agents learn the rules. Then they destroy their own way out.</p>
+  <p class="hint in d3">Space to start &middot; N for notes</p>
+</section>
+
+<!-- 2 · 0:07 to 0:16 -->
+<section class="s" data-dur="9" data-say="Seven unknown substances. Six experiments to figure them out. Then three chambers where your only move is to open a gate, forever. No undo. A person gets the rules in thirty seconds.">
+  <div class="split">
+    <div>
+      <h2 class="in">Open a gate.<br>Forever.</h2>
+      <p class="in d2" style="margin-top:28px">Seven unknown substances. Six experiments. Three chambers. No undo.</p>
+    </div>
+    <img class="shot in d1" src="docs/img/game.png" alt="The Crucible browser game">
+  </div>
+</section>
+
+<!-- 3 · 0:16 to 0:30 -->
+<section class="s" data-dur="14" data-gif="results/clips/deck-gpt-6.1-sol-works.gif" data-say="Watch the left side. That is OpenAI's GPT-6.1 Sol. One gate. Three hundred seventy six ways to win become zero. Nothing looks wrong, so it keeps playing. We know the exact move because we simulate every possible order.">
+  <div class="full"><img class="in" alt="gpt-6.1-sol losing the works chamber at its first opening"></div>
+  <div class="cap">
+    <h2 class="in d2">376 &rarr; <span class="red">0</span></h2>
+    <p class="in d3">One opening. Real trial, GPT-6.1 Sol.<br>Left: the agent. Right: our reference.</p>
+  </div>
+</section>
+
+<!-- 4 · 0:30 to 0:43 -->
+<section class="s" data-dur="13" data-say="Who did well. Our reference scores a perfect one, every seed. OpenAI's GPT-6 family, twelve trials through Harbor and OpenCode: zero facilities completed. The flagship, Astra, averages point three. And more thinking made it worse.">
+  <h2 class="in">Who did well.</h2>
+  <p class="in d1" style="margin-top:18px">Twelve agent trials. Zero facilities completed.</p>
+  <div class="chart in d2" id="chart"></div>
+  <div class="axis in d3"><div></div><div><span>0</span><span>0.25</span><span>0.5</span><span>0.75</span><span>1.0</span></div><div></div></div>
+</section>
+
+<!-- 5 · 0:43 to 0:52 -->
+<section class="s" data-dur="9" data-say="Here is why it is fair. Give the same model three extra experiments and it wins, because it can rehearse. At six, which is all our reference needs, it has to actually plan. And it can't.">
+  <h2 class="in">Take away the rehearsal.</h2>
+  <div class="pairs">
+    <div class="pair in d1"><div class="lab">9 experiments</div><div class="n" data-count="1.00">0.00</div><p>Same model. It rehearses, and wins.</p></div>
+    <div class="pair b in d2"><div class="lab">6 experiments</div><div class="n" data-count="0.42">0.00</div><p>All our reference needs. It has to plan.</p></div>
+  </div>
+</section>
+
+<!-- 6 · 0:52 to 1:00 -->
+<section class="s" data-dur="8" data-say="And you cannot cheat it. We ran a hostile agent inside the real task: zero. Thirty four trials, every log in the repo, one command to rerun all of it. That's Crucible.">
+  <h2 class="in">Try to break it.</h2>
+  <div class="stats">
+    <div class="stat in d1"><div class="n" data-count="0.00">0.00</div><p>Hostile agent forging the reward, inside the real task.</p></div>
+    <div class="stat in d2"><div class="n" data-count="34" data-int="1">0</div><p>Agent trials through Harbor. Every log is in the repo.</p></div>
+    <div class="stat in d3"><div class="n">1</div><p class="mono" style="color:#eee">scripts/verify.sh</p></div>
+  </div>
+</section>
+
+</main>
+<script>
+// Measured through Harbor 0.26 and OpenCode 1.19.5 on the default tasks (3 chambers, 6 lab runs).
+const DATA = [
+  {name: 'Reference',          sub: 'ours, 3 seeds',          mean: 1.000, runs: [1, 1, 1], cls: 'ref'},
+  {name: 'GPT-6.1 Terra',      sub: 'OpenAI, 3 trials',       mean: 0.411, runs: [0.700, 0.400, 0.133]},
+  {name: 'GPT-6.1 Sol',        sub: 'OpenAI, 5 trials',       mean: 0.307, runs: [0.167, 0.167, 0.367, 0.433, 0.400]},
+  {name: 'GPT-6 Astra',        sub: 'OpenAI flagship, 2',     mean: 0.300, runs: [0.433, 0.167]},
+  {name: 'GPT-6.1 Sol, high',  sub: 'more reasoning, 2',      mean: 0.167, runs: [0.167, 0.167]},
+  {name: 'Do nothing',         sub: 'baseline',               mean: 0.000, runs: [], cls: 'zero'},
+  {name: 'Cheating agent',     sub: 'hostile script',         mean: 0.000, runs: [], cls: 'zero'},
+];
+const chart = document.getElementById('chart');
+for (const d of DATA) {
+  const r = document.createElement('div'); r.className = 'row ' + (d.cls || '');
+  r.innerHTML = `<div class="name">${d.name}<small>${d.sub}</small></div><div class="track"><div class="bar" data-w="${d.mean * 100}"></div>` +
+    d.runs.map((v) => `<span class="dot" style="left:${v * 100}%"></span>`).join('') + `</div><div class="val" data-count="${d.mean.toFixed(2)}">0.00</div>`;
+  chart.appendChild(r);
+}
+
+const m = document.getElementById('main'), ss = [...document.querySelectorAll('.s')], N = ss.length, dots = document.getElementById('dots');
+ss.forEach((s, i) => { const n = document.createElement('span'); n.className = 'sn'; n.textContent = String(i + 1).padStart(2, '0') + '/' + String(N).padStart(2, '0'); s.appendChild(n); });
+ss.forEach((s, i) => { const b = document.createElement('button'); b.onclick = () => go(i); dots.appendChild(b); });
+const TOTAL = ss.reduce((t, s) => t + +s.dataset.dur, 0);
+let cur = -1, auto = false, t0 = 0, timer = null;
+
+function count(el) {
+  const target = +el.dataset.count, int = el.dataset.int, start = performance.now(), dur = 1500;
+  const step = (now) => { const k = Math.min(1, (now - start) / dur), e = 1 - Math.pow(1 - k, 3), v = target * e; el.textContent = int ? Math.round(v) : v.toFixed(2); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+function enter(i) {
+  if (i === cur) return; cur = i; const s = ss[i];
+  ss.forEach((x, k) => x.classList.toggle('live', k === i));
+  dots.querySelectorAll('button').forEach((b, k) => b.className = k === i ? 'on' : '');
+  s.querySelectorAll('.bar').forEach((b) => { b.style.width = '0'; requestAnimationFrame(() => requestAnimationFrame(() => b.style.width = b.dataset.w + '%')); });
+  s.querySelectorAll('[data-count]').forEach((el) => setTimeout(() => count(el), 350));
+  if (s.dataset.gif) { const img = s.querySelector('.full img'); img.src = ''; img.src = s.dataset.gif + '?t=' + Date.now(); }  // restart the clip from its first frame
+  document.getElementById('nt').textContent = `SLIDE ${i + 1} OF ${N}  ·  ${s.dataset.dur}s`;
+  document.getElementById('nx').textContent = s.dataset.say;
+}
+// While a programmatic scroll is in flight, slides it passes must not activate.
+let hold = 0;
+function go(i, instant) { i = Math.max(0, Math.min(N - 1, i)); hold = performance.now() + 1100; ss[i].scrollIntoView({behavior: instant ? 'auto' : 'smooth', block: 'start'}); enter(i); }
+m.addEventListener('scroll', () => { const t = m.scrollTop; let b = 0, bd = 1e9; ss.forEach((s, i) => { const d = Math.abs(s.offsetTop - t); if (d < bd) { bd = d; b = i; } }); if (!auto && performance.now() > hold) enter(b); }, {passive: true});
+
+// Timed run: advances on each slide's own duration so the whole talk lands on 60 seconds.
+function run() {
+  auto = true; t0 = performance.now(); go(0);
+  const ends = []; let acc = 0; ss.forEach((s) => { acc += +s.dataset.dur; ends.push(acc); });
+  clearInterval(timer);
+  timer = setInterval(() => {
+    const el = (performance.now() - t0) / 1000;
+    document.getElementById('bar').style.width = Math.min(100, el / TOTAL * 100) + '%';
+    document.getElementById('clock').textContent = `${String(Math.floor(el / 60))}:${String(Math.floor(el % 60)).padStart(2, '0')} / 1:00`;
+    const want = ends.findIndex((e) => el < e);
+    if (want === -1) { stop(); document.getElementById('clock').textContent = '1:00 / 1:00'; return; }
+    if (want !== cur) go(want);
+  }, 100);
+}
+function stop() { auto = false; clearInterval(timer); }
+document.addEventListener('keydown', (e) => {
+  if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); auto ? stop() : run(); }
+  else if (['ArrowDown', 'ArrowRight', 'PageDown'].includes(e.key)) { e.preventDefault(); stop(); go(cur + 1); }
+  else if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); stop(); go(cur - 1); }
+  else if (e.key.toLowerCase() === 'n') document.body.classList.toggle('notes');
+  else if (e.key.toLowerCase() === 'r') { stop(); document.getElementById('bar').style.width = '0'; document.getElementById('clock').textContent = 'PRESS SPACE'; cur = -1; go(0); }
+});
+enter(0);
+if (location.hash === '#auto') run();
+if (location.hash.startsWith('#s')) { cur = -1; go(+location.hash.slice(2) - 1, true); }
+</script>
+</body>
+</html>

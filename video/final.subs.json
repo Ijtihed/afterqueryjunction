@@ -1,0 +1,202 @@
+[
+ {
+  "start": 0.3,
+  "end": 2.2,
+  "text": "Coding agents may seem indestructible"
+ },
+ {
+  "start": 2.2,
+  "end": 3.05,
+  "text": "on the surface,"
+ },
+ {
+  "start": 3.05,
+  "end": 4.6,
+  "text": "but the only way to actually make them better"
+ },
+ {
+  "start": 4.6,
+  "end": 5.9,
+  "text": "is to put them in a box"
+ },
+ {
+  "start": 5.9,
+  "end": 7.0,
+  "text": "and then blow it up."
+ },
+ {
+  "start": 7.57,
+  "end": 10.33,
+  "text": "So this is the box that we call Crucible."
+ },
+ {
+  "start": 10.37,
+  "end": 11.71,
+  "text": "We know that frontier agents"
+ },
+ {
+  "start": 11.75,
+  "end": 13.37,
+  "text": "are really good at writing code,"
+ },
+ {
+  "start": 13.41,
+  "end": 15.19,
+  "text": "they can pass bar exams, they can pass SATs,"
+ },
+ {
+  "start": 15.23,
+  "end": 17.23,
+  "text": "but if you give them something they cannot undo,"
+ },
+ {
+  "start": 17.27,
+  "end": 18.23,
+  "text": "they break."
+ },
+ {
+  "start": 18.27,
+  "end": 19.35,
+  "text": "And how does that work?"
+ },
+ {
+  "start": 19.39,
+  "end": 21.85,
+  "text": "We gave them an example of an environment:"
+ },
+ {
+  "start": 21.89,
+  "end": 23.73,
+  "text": "seven unknown substances."
+ },
+ {
+  "start": 23.77,
+  "end": 25.59,
+  "text": "Some pour, some pile, some do whatever."
+ },
+ {
+  "start": 25.63,
+  "end": 26.55,
+  "text": "Then three chambers,"
+ },
+ {
+  "start": 26.59,
+  "end": 28.61,
+  "text": "and your only move is to open a gate, forever."
+ },
+ {
+  "start": 28.65,
+  "end": 29.95,
+  "text": "That's it. You only get one choice."
+ },
+ {
+  "start": 29.99,
+  "end": 32.71,
+  "text": "You get six experiments to try with beforehand,"
+ },
+ {
+  "start": 32.75,
+  "end": 36.57,
+  "text": "so you can play around with the tries and errors."
+ },
+ {
+  "start": 36.61,
+  "end": 38.53,
+  "text": "That's all we gave the agents."
+ },
+ {
+  "start": 38.57,
+  "end": 41.17,
+  "text": "As you can see, here's GPT-6.1 Sol."
+ },
+ {
+  "start": 41.21,
+  "end": 42.91,
+  "text": "We gave it one gate, and it just..."
+ },
+ {
+  "start": 42.95,
+  "end": 44.69,
+  "text": "370 ways to win become zero."
+ },
+ {
+  "start": 44.73,
+  "end": 46.53,
+  "text": "It's just kind of instantly lost."
+ },
+ {
+  "start": 46.57,
+  "end": 48.15,
+  "text": "The flagship, GPT-6 Astra,"
+ },
+ {
+  "start": 48.19,
+  "end": 49.95,
+  "text": "does the same thing in our hardest chamber."
+ },
+ {
+  "start": 49.99,
+  "end": 52.63,
+  "text": "So what we noticed is that the AI agent"
+ },
+ {
+  "start": 52.67,
+  "end": 54.11,
+  "text": "is very confident in its answers."
+ },
+ {
+  "start": 54.15,
+  "end": 56.43,
+  "text": "And as you can see here, we have GPT-6.1 Terra,"
+ },
+ {
+  "start": 56.47,
+  "end": 58.15,
+  "text": "which is actually worse than Sol."
+ },
+ {
+  "start": 58.19,
+  "end": 61.53,
+  "text": "It's doing better because it's a bit more apprehensive."
+ },
+ {
+  "start": 61.57,
+  "end": 64.61,
+  "text": "It takes its time to think about it a bit more."
+ },
+ {
+  "start": 64.65,
+  "end": 67.37,
+  "text": "Once you give the agents more rehearsal,"
+ },
+ {
+  "start": 67.41,
+  "end": 69.49,
+  "text": "so nine experiments, it does way better."
+ },
+ {
+  "start": 69.53,
+  "end": 72.17,
+  "text": "But if you give it six, it struggles tremendously,"
+ },
+ {
+  "start": 72.21,
+  "end": 74.71,
+  "text": "and that's pretty interesting."
+ },
+ {
+  "start": 74.75,
+  "end": 78.45,
+  "text": "Even though the chambers are very similar difficulty,"
+ },
+ {
+  "start": 78.49,
+  "end": 81.99,
+  "text": "they struggle more with the ones that have more complexity."
+ },
+ {
+  "start": 82.03,
+  "end": 85.05,
+  "text": "And now we know, because we simulated every possible order."
+ }
+]

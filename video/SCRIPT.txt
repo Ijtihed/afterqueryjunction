@@ -1,0 +1,64 @@
+CRUCIBLE  ·  VOICEOVER SCRIPT
+=============================
+
+Record this in one take, in order. Your part starts right after the intro
+("...put them in a box and then blow it up.").
+
+- Leave a clear half-second pause between the numbered blocks. I use those
+  gaps to line each slide up with your voice.
+- Don't read the numbers or the [bracketed] notes aloud.
+- Pace: unhurried. About 80 seconds in total. If you fluff a line, pause and
+  say the whole block again; I'll cut the bad one.
+- Any format is fine (phone voice memo, m4a, mp3, wav, mov). Send me the file
+  path when it's done.
+
+
+1.  [title]
+    This is the box. We call it Crucible.
+
+2.  [where agents break]
+    Frontier agents write code and pass exams.
+    But give them a move they cannot undo, and they break.
+
+3.  [seven substances]
+    So we built a sealed facility. Seven substances.
+    Nobody tells you how they behave.
+
+4.  [six experiments]
+    You get six experiments in a small lab to figure them out.
+
+5.  [open a gate]
+    Then three chambers. Your only move is to open a gate. Forever.
+
+6.  [GPT-6.1 Sol clip]
+    Here is OpenAI's GPT-6.1 Sol.
+    One gate, and three hundred seventy-six ways to win become zero.
+    It keeps playing.
+
+7.  [GPT-6 Astra clip]
+    The flagship, GPT-6 Astra, does the same in our hardest chamber.
+    First move.
+    We know, because we simulate every possible order.
+
+8.  [the chart]
+    Who did well.
+    Our reference: perfect.
+    Twelve agent trials through Harbor and OpenCode: zero facilities completed.
+
+9.  [nine versus six]
+    Give the same model three more experiments, and it wins.
+    At six, all our reference needs, it has to plan. It can't.
+
+10. [what we ruled out]
+    We tried to explain it away.
+    Same tools, easier chambers: solved.
+    Every rule is observable.
+    More reasoning made it worse.
+
+11. [cheating]
+    And you cannot cheat it.
+    A hostile agent inside the real task scored zero.
+
+12. [close]
+    Thirty-four trials, every log in the repo, one command to rerun.
+    Crucible.

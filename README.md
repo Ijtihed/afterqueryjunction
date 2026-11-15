@@ -31,7 +31,8 @@ Built for AfterQuery's *Break the Agent* challenge at Junction 2026. Packaged as
 9. [The reference solution and what it knows](#the-reference-solution-and-what-it-knows)
 10. [Tooling](#tooling)
 11. [Run it](#run-it)
-12. [Limits, stated plainly](#limits-stated-plainly)
+12. [The pitch](#the-pitch)
+13. [Limits, stated plainly](#limits-stated-plainly)
 
 ---
 
@@ -392,12 +393,22 @@ reference/solve.py  reference player
 task-template/      Harbor task skeleton; scripts/build_tasks.py fills tasks/
 tasks/              generated, self-contained Harbor tasks
 web/                browser game and replay viewer (render only, no game logic)
-scripts/            the tooling above
+scripts/            the tooling above, plus make_video and voice_align for the pitch video
+video/              the pitch video, its slide plan, subtitles and fonts
+presentation.html   the 60 second live deck
 redteam/            hostile agent script and adversarial instruction
 tests/              engine and reward-integrity tests
 results/            Harbor trial logs, pilot journals, replays, clips, red-team evidence
 docs/DECISION.md    research review, candidate concepts, decision, formal spec
 ```
+
+---
+
+## The pitch
+
+- **Video (90 seconds):** [`video/crucible-pitch.mp4`](video/crucible-pitch.mp4). A spoken intro, then twelve slides cut to a voiceover, with subtitles. All chamber footage in it is simulator frames from recorded trials.
+- **Live deck (60 seconds, self-timed):** open [`presentation.html`](presentation.html) in a browser and press Space. The speaker script and the source of every number are in [`docs/PITCH.md`](docs/PITCH.md).
+- **How the video is made:** [`video/README.md`](video/README.md).
 
 ---
 
